@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - "3306"
     environment:
       MYSQL_DATABASE: alienpanic
       MYSQL_USER: root
