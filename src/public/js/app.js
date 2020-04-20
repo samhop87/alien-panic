@@ -1914,14 +1914,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -37577,27 +37569,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", {}, [
-      _c("div", {}, [
-        _c("div", { staticClass: "font-bold h-16" }, [
-          _vm._v("\n            Welcome to Vue.js on Laravel\n        ")
-        ]),
+    return _c(
+      "div",
+      {
+        staticClass:
+          "flex flex-col justify-center align-center container mx-auto w-4/5 h-screen"
+      },
+      [
+        _c(
+          "h1",
+          { staticClass: "font-bold font-display text-3xl text-center" },
+          [_vm._v("Welcome to Alien Panic.")]
+        ),
         _vm._v(" "),
-        _c("div", {}, [
-          _c("a", { attrs: { href: "https://laravel.com/docs" } }, [
-            _vm._v("View Laravel Docs")
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "https://vuejs.org/v2/guide/" } }, [
-            _vm._v("View Vue Docs")
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "https://laracasts.com" } }, [
-            _vm._v("Watch Videos")
-          ])
+        _c("p", { staticClass: "text-center" }, [
+          _vm._v("A building and defence game.")
         ])
-      ])
-    ])
+      ]
+    )
   }
 ]
 render._withStripped = true

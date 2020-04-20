@@ -1,16 +1,8 @@
 <template>
-    <div class="">
-        <div class="">
-            <div class="font-bold h-16">
-                Welcome to Vue.js on Laravel
+            <div class="flex flex-col justify-center align-center container mx-auto w-4/5 h-screen">
+                <h1 class="font-bold font-display text-3xl text-center">Welcome to Alien Panic.</h1>
+                <p class="text-center">A building and defence game.</p>
             </div>
-            <div class="">
-                <a href="https://laravel.com/docs">View Laravel Docs</a>
-                <a href="https://vuejs.org/v2/guide/">View Vue Docs</a>
-                <a href="https://laracasts.com">Watch Videos</a>
-            </div>
-        </div>
-    </div>
 </template>
 <script>
     export default {}
