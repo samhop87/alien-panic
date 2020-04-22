@@ -15,3 +15,5 @@ Route::get('/', [
     'as' => 'welcome',
     'uses' => EntryController::class . '@index'
 ]);
+
+Route::post('/submit', 'EntryController@submit');

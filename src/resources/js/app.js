@@ -17,6 +17,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('welcome', require('./components/Welcome.vue').default);
+Vue.component('user-store', require('./components/UserStore').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
