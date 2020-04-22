@@ -1914,6 +1914,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -37579,12 +37590,47 @@ var staticRenderFns = [
         _c(
           "h1",
           { staticClass: "font-bold font-display text-3xl text-center" },
-          [_vm._v("Welcome to Alien Panic.")]
+          [_vm._v("Welcome to Alien Panic!")]
         ),
         _vm._v(" "),
-        _c("p", { staticClass: "text-center" }, [
+        _c("p", { staticClass: "text-center mb-4" }, [
           _vm._v("A building and defence game.")
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "flex flex-col justify-around align-center items-center container mx-auto w-4/5 text-center"
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n        p-2 w-1/2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center"
+              },
+              [
+                _c("a", { staticClass: "font-semibold" }, [
+                  _vm._v("Continue Game")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "rounded-lg cursor-pointer hover:text-white hover:bg-green-500\n        p-2 w-1/2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center content-center"
+              },
+              [
+                _c("a", { staticClass: "font-semibold" }, [
+                  _vm._v("Create User")
+                ])
+              ]
+            )
+          ]
+        )
       ]
     )
   }
