@@ -13,8 +13,7 @@
     </head>
     <body>
     <div id="app">
-        <welcome></welcome>
-        <user-store></user-store>
+        <landing></landing>
     </div>
     <script type="text/javascript" src="js/app.js"></script>
     </body>

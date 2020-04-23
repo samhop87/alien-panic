@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class EntryController extends Controller
@@ -14,11 +15,22 @@ class EntryController extends Controller
     }
 
     public function submit(Request $request) {
-        dd("hit");
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email',
-            'message' => 'required',
+        ]);
+
+//        $users = User::all();
+//
+//        foreach ($users as $user) {
+//            if ($user->email == $request->email) {
+//                return response()->json('no repeat email', 200);
+//            }
+//        }
+
+        User::create([
+           'name' => $request->name,
+            'email' => $request->email,
         ]);
 
         /*

@@ -7,7 +7,7 @@
                     p-2 w-1/2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
                       content-center"><a class="font-semibold">Continue Game</a></div>
-                    <div class="rounded-lg cursor-pointer hover:text-white hover:bg-green-500
+                    <div v-on:click="createUser" class="rounded-lg cursor-pointer hover:text-white hover:bg-green-500
                     p-2 w-1/2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center content-center">
                         <a class="font-semibold">Create User</a>
@@ -16,5 +16,10 @@
             </div>
 </template>
 <script>
-    export default {}
-</script>
+    export default {
+        methods: {
+            createUser (event) {
+                this.$emit('clicked', 'test')
+            }
+        }
+    }</script>
