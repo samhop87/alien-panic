@@ -20,17 +20,18 @@ class EntryController extends Controller
             'email' => 'required|email',
         ]);
 
-//        $users = User::all();
-//
-//        foreach ($users as $user) {
-//            if ($user->email == $request->email) {
-//                return response()->json('no repeat email', 200);
-//            }
-//        }
+        $users = User::all();
+
+        foreach ($users as $user) {
+            if ($user->email == $request->email) {
+                return response()->json('no repeat email', 200);
+            }
+        }
 
         User::create([
            'name' => $request->name,
             'email' => $request->email,
+            'password' => "test"
         ]);
 
         /*
