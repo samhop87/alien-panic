@@ -1924,6 +1924,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1941,6 +1942,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     createUser: function createUser(value) {
       this.create = true;
+    },
+    goBack: function goBack(value) {
+      this.create = false;
     }
   }
 });
@@ -1990,6 +1994,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1998,6 +2029,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    goBack: function goBack() {
+      this.$emit('clicked', 'test');
+    },
     submit: function submit() {
       var _this = this;
 
@@ -37706,7 +37740,9 @@ var render = function() {
             ? _c("welcome", { on: { clicked: _vm.createUser } })
             : _vm._e(),
           _vm._v(" "),
-          _vm.create ? _c("user-store") : _vm._e()
+          _vm.create
+            ? _c("user-store", { on: { clicked: _vm.goBack } })
+            : _vm._e()
         ],
         1
       )
@@ -37740,7 +37776,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "flex flex-col justify-around align-center container mx-auto w-1/2 h-screen"
+        "flex flex-col justify-around align-center container mx-auto w-2/3 h-screen"
     },
     [
       _c("h4", { staticClass: "font-bold font-display text-1xl text-center" }, [
@@ -37750,7 +37786,7 @@ var render = function() {
       _c(
         "form",
         {
-          staticClass: "flex flex-col container mx-auto w-full",
+          staticClass: "flex flex-row flex-wrap container mx-auto w-full",
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -37759,115 +37795,177 @@ var render = function() {
           }
         },
         [
-          _c("div", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.fields.name,
-                  expression: "fields.name"
-                }
-              ],
+          _c(
+            "div",
+            {
               staticClass:
-                "rounded-lg\n                p-2 w-1/2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-              attrs: {
-                type: "text",
-                name: "name",
-                id: "name",
-                placholder: "name"
-              },
-              domProps: { value: _vm.fields.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                "flex flex-col flex-wrap container mx-auto w-full md:w-1/2"
+            },
+            [
+              _c("div", { staticClass: "w-5/6 p-2 container mx-auto" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.name,
+                      expression: "fields.name"
+                    }
+                  ],
+                  staticClass:
+                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                  attrs: {
+                    type: "text",
+                    name: "name",
+                    id: "name",
+                    placeholder: "username"
+                  },
+                  domProps: { value: _vm.fields.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.fields, "name", $event.target.value)
+                    }
                   }
-                  _vm.$set(_vm.fields, "name", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm.errors && _vm.errors.name
-              ? _c("div", { staticClass: "text-danger" }, [
-                  _vm._v(_vm._s(_vm.errors.name[0]))
-                ])
-              : _vm._e()
-          ]),
+                }),
+                _vm._v(" "),
+                _vm.errors && _vm.errors.name
+                  ? _c("div", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.errors.name[0]))
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 p-2 container mx-auto" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.email,
+                      expression: "fields.email"
+                    }
+                  ],
+                  staticClass:
+                    "p-2 w-full rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                  attrs: {
+                    type: "email",
+                    name: "email",
+                    id: "email",
+                    placeholder: "valid email address"
+                  },
+                  domProps: { value: _vm.fields.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.fields, "email", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors && _vm.errors.email
+                  ? _c("div", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.errors.email[0]))
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 p-2 container mx-auto" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.message,
+                      expression: "fields.message"
+                    }
+                  ],
+                  staticClass:
+                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                  attrs: { id: "message", name: "message", rows: "5" },
+                  domProps: { value: _vm.fields.message },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.fields, "message", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors && _vm.errors.message
+                  ? _c("div", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.errors.message[0]))
+                    ])
+                  : _vm._e()
+              ])
+            ]
+          ),
           _vm._v(" "),
-          _c("div", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.fields.email,
-                  expression: "fields.email"
-                }
-              ],
-              staticClass:
-                "rounded-lg\n                p-2 w-1/2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-              attrs: { type: "email", name: "email", id: "email" },
-              domProps: { value: _vm.fields.email },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.fields, "email", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm.errors && _vm.errors.email
-              ? _c("div", { staticClass: "text-danger" }, [
-                  _vm._v(_vm._s(_vm.errors.email[0]))
-                ])
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.fields.message,
-                  expression: "fields.message"
-                }
-              ],
-              staticClass:
-                "rounded-lg\n                p-2 w-1/2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-              attrs: { id: "message", name: "message", rows: "5" },
-              domProps: { value: _vm.fields.message },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.fields, "message", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _vm.errors && _vm.errors.message
-              ? _c("div", { staticClass: "text-danger" }, [
-                  _vm._v(_vm._s(_vm.errors.message[0]))
-                ])
-              : _vm._e()
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
-            "button",
-            { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-            [_vm._v("Send message")]
+            "div",
+            {
+              staticClass:
+                "flex flex-row flex-wrap justify-between container mx-auto w-4/5"
+            },
+            [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                  attrs: { type: "button" },
+                  on: { click: _vm.goBack }
+                },
+                [_vm._v("Go back")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                  attrs: { type: "submit" }
+                },
+                [_vm._v("Save\n            ")]
+              )
+            ]
           )
         ]
       )
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "flex container mx-auto w-full md:w-1/2" },
+      [
+        _c("div", { staticClass: "flex h-full w-5/6 container mx-auto p-2" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center"
+            },
+            [_c("p", [_vm._v("x")])]
+          )
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 

@@ -7,6 +7,7 @@
     ></welcome>
     <user-store
         v-if="create"
+        @clicked="goBack"
     ></user-store>
         </transition>
     </div>
@@ -31,6 +32,9 @@
         methods: {
             createUser (value) {
                 this.create = true;
+            },
+            goBack (value) {
+                this.create = false;
             }
         }
     }
