@@ -2,6 +2,12 @@
     <div class="flex flex-col justify-around align-center container mx-auto w-2/3 h-screen">
         <h4 class="font-bold font-display text-1xl text-center">Create your user</h4>
 
+        <button type="button" v-on:click="startGame" class="
+                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500
+                    p-2 border-4 border-gray-400 border-solid
+                     my-2 flex justify-center align-center
+                      content-center">Proceed</button>
+
         <form class="flex flex-row flex-wrap container mx-auto w-full"
               @submit.prevent="submit">
 
@@ -71,10 +77,15 @@
             goBack() {
                 this.$emit('clicked', 'test')
             },
+            startGame() {
+                console.log("hits inside the child component")
+                this.$emit('begin')
+            },
             submit() {
                 this.errors = {};
                 axios.post('/submit', this.fields).then(response => {
                     alert('Message sent!');
+                    this.startGame();
                 }).catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors || {};

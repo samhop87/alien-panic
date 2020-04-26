@@ -1899,6 +1899,34 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameScreen.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GameScreen.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    goHome: function goHome() {
+      this.$emit('clicked', 'test');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Landing.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Landing.vue?vue&type=script&lang=js& ***!
@@ -1910,6 +1938,7 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UserStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserStore */ "./resources/js/components/UserStore.vue");
 /* harmony import */ var _Welcome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Welcome */ "./resources/js/components/Welcome.vue");
+/* harmony import */ var _GameScreen__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GameScreen */ "./resources/js/components/GameScreen.vue");
 //
 //
 //
@@ -1925,6 +1954,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1932,11 +1971,13 @@ __webpack_require__.r(__webpack_exports__);
   props: {},
   components: {
     UserStore: _UserStore__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Welcome: _Welcome__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Welcome: _Welcome__WEBPACK_IMPORTED_MODULE_1__["default"],
+    GameScreen: _GameScreen__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
-      create: false
+      create: false,
+      showGame: false
     };
   },
   methods: {
@@ -1944,6 +1985,15 @@ __webpack_require__.r(__webpack_exports__);
       this.create = true;
     },
     goBack: function goBack(value) {
+      this.create = false;
+    },
+    goHome: function goHome(value) {
+      this.create = false;
+      this.showGame = false;
+    },
+    startGame: function startGame(value) {
+      console.log("hits the parent");
+      this.showGame = true;
       this.create = false;
     }
   }
@@ -2021,6 +2071,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2032,12 +2088,18 @@ __webpack_require__.r(__webpack_exports__);
     goBack: function goBack() {
       this.$emit('clicked', 'test');
     },
+    startGame: function startGame() {
+      console.log("hits inside the child component");
+      this.$emit('begin');
+    },
     submit: function submit() {
       var _this = this;
 
       this.errors = {};
       axios.post('/submit', this.fields).then(function (response) {
         alert('Message sent!');
+
+        _this.startGame();
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this.errors = error.response.data.errors || {};
@@ -37714,6 +37776,41 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameScreen.vue?vue&type=template&id=2e52b8a9&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GameScreen.vue?vue&type=template&id=2e52b8a9& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass:
+          "\n                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                    p-2 border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
+        attrs: { type: "button" },
+        on: { click: _vm.goHome }
+      },
+      [_vm._v("Go back to home screen")]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Landing.vue?vue&type=template&id=15bf0008&":
 /*!**********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Landing.vue?vue&type=template&id=15bf0008& ***!
@@ -37736,12 +37833,18 @@ var render = function() {
         "transition",
         { attrs: { mode: "out-in", name: "fade" } },
         [
-          !_vm.create
+          !_vm.create && !_vm.showGame
             ? _c("welcome", { on: { clicked: _vm.createUser } })
             : _vm._e(),
           _vm._v(" "),
           _vm.create
-            ? _c("user-store", { on: { clicked: _vm.goBack } })
+            ? _c("user-store", {
+                on: { clicked: _vm.goBack, begin: _vm.startGame }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showGame
+            ? _c("game-screen", { on: { clicked: _vm.goHome } })
             : _vm._e()
         ],
         1
@@ -37782,6 +37885,17 @@ var render = function() {
       _c("h4", { staticClass: "font-bold font-display text-1xl text-center" }, [
         _vm._v("Create your user")
       ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+          attrs: { type: "button" },
+          on: { click: _vm.startGame }
+        },
+        [_vm._v("Proceed")]
+      ),
       _vm._v(" "),
       _c(
         "form",
@@ -50229,6 +50343,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.component('welcome', __webpack_require__(/*! ./components/Welcome.vue */ "./resources/js/components/Welcome.vue")["default"]);
 Vue.component('user-store', __webpack_require__(/*! ./components/UserStore */ "./resources/js/components/UserStore.vue")["default"]);
 Vue.component('landing', __webpack_require__(/*! ./components/Landing */ "./resources/js/components/Landing.vue")["default"]);
+Vue.component('game-screen', __webpack_require__(/*! ./components/GameScreen */ "./resources/js/components/GameScreen.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -50283,6 +50398,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/GameScreen.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/GameScreen.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GameScreen_vue_vue_type_template_id_2e52b8a9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GameScreen.vue?vue&type=template&id=2e52b8a9& */ "./resources/js/components/GameScreen.vue?vue&type=template&id=2e52b8a9&");
+/* harmony import */ var _GameScreen_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GameScreen.vue?vue&type=script&lang=js& */ "./resources/js/components/GameScreen.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GameScreen_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GameScreen_vue_vue_type_template_id_2e52b8a9___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GameScreen_vue_vue_type_template_id_2e52b8a9___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/GameScreen.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/GameScreen.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/GameScreen.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameScreen_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./GameScreen.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameScreen.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameScreen_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/GameScreen.vue?vue&type=template&id=2e52b8a9&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/GameScreen.vue?vue&type=template&id=2e52b8a9& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameScreen_vue_vue_type_template_id_2e52b8a9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./GameScreen.vue?vue&type=template&id=2e52b8a9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameScreen.vue?vue&type=template&id=2e52b8a9&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameScreen_vue_vue_type_template_id_2e52b8a9___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameScreen_vue_vue_type_template_id_2e52b8a9___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

@@ -19,6 +19,8 @@ window.Vue = require('vue');
 Vue.component('welcome', require('./components/Welcome.vue').default);
 Vue.component('user-store', require('./components/UserStore').default);
 Vue.component('landing', require('./components/Landing').default);
+Vue.component('game-screen', require('./components/GameScreen').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
