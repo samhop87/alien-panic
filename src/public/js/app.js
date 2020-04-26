@@ -1917,8 +1917,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      vueCanvas: null,
+      rectWidth: 200
+    };
+  },
+  mounted: function mounted() {
+    this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
+  },
   methods: {
+    drawRect: function drawRect() {
+      // clear canvas
+      this.vueCanvas.clearRect(0, 0, 400, 200); // draw rect
+
+      this.vueCanvas.beginPath();
+      this.vueCanvas.rect(20, 20, this.rectWidth, 100);
+      this.vueCanvas.stroke();
+    },
     goHome: function goHome() {
       this.$emit('clicked', 'test');
     }
@@ -37791,20 +37827,56 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "button",
-      {
-        staticClass:
-          "\n                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                    p-2 border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
-        attrs: { type: "button" },
-        on: { click: _vm.goHome }
-      },
-      [_vm._v("Go back to home screen")]
-    )
-  ])
+  return _c(
+    "div",
+    {
+      staticClass:
+        "container mx-auto w-3/4 flex flex-col h-screen justify-center items-center"
+    },
+    [
+      _c("div", [
+        _c(
+          "button",
+          {
+            staticClass:
+              "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+            attrs: { type: "button" },
+            on: { click: _vm.goHome }
+          },
+          [_vm._v("Go back to home screen\n        ")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "button",
+          {
+            staticClass:
+              "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+            attrs: { type: "button" },
+            on: { click: _vm.drawRect }
+          },
+          [_vm._v("Draw rectangle\n        ")]
+        )
+      ])
+    ]
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-full" }, [
+      _c("canvas", {
+        staticClass: "w-full border-solid border-gray-300 border-4",
+        attrs: { id: "gameCanvas" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
