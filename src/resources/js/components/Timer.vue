@@ -22,7 +22,7 @@
                     if (value > 0) {
                         setTimeout(() => {
                             this.timerCount--;
-                            $emit
+                            this.$emit('time', this.timerCount)
                         }, 60000);
                     }
 

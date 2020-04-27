@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import Multiselect from 'vue-multiselect'
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,6 +22,7 @@ Vue.component('user-store', require('./components/UserStore').default);
 Vue.component('landing', require('./components/Landing').default);
 Vue.component('game-screen', require('./components/GameScreen').default);
 Vue.component('timer', require('./components/Timer').default);
+Vue.component('multiselect', Multiselect);
 
 
 /**

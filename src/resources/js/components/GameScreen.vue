@@ -21,7 +21,7 @@
             <div class="container mx-auto w-full flex flex-row py-2">
                 <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
                     <p class="font-display">Alien attack in: </p>
-                    <timer></timer>
+                    <timer @time="addToProgress"></timer>
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-center items-center">
                     <p class="font-display">Score: **</p>
@@ -36,12 +36,30 @@
                 <canvas class="w-full border-solid border-gray-300 border-4" id="gameCanvas"></canvas>
             </div>
 
+            <div class="border-4 border-solid border-red-300">
+            <multiselect
+                :options="options"
+                v-model="value"
+                deselect-label="Can't remove this value"
+                track-by="name"
+                label="name"
+                placeholder="Select one"
+                :searchable="false"
+                :allow-empty="false"
+            >
+                <template slot="singleLabel" slot-scope="props"><img class="option__image" :src="props.option.img" alt="No Man’s Sky"><span class="option__desc"><span class="option__title">{{ props.option.title }}</span></span></template>
+                <template slot="option" slot-scope="props"><img class="option__image" :src="props.option.img" alt="No Man’s Sky">
+                    <div class="option__desc"><span class="option__title">{{ props.option.title }}</span><span class="option__small">{{ props.option.desc }}</span></div>
+                </template>
+            </multiselect>
+            </div>
+
             <div>
-                <button type="button" v-on:click="drawRect" class="
+                <button type="button" v-on:click="build" class="
                 w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500
                     p-2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center">Draw rectangle
+                      content-center">Build it!
                 </button>
             </div>
 
@@ -50,12 +68,22 @@
 </template>
 
 <script>
+    import Multiselect from 'vue-multiselect'
+
     export default {
-        props: ['time'],
+        components: {Multiselect},
+        props: [],
         data() {
             return {
+                value: null,
+                options: [
+                    { title: 'Quarry', desc: 'Produces rocks', img: './images/testalien.jpg' },
+                    { title: 'Library', desc: 'Produces magic', img: './images/testalien.jpg' },
+                    { title: 'Defender', desc: 'Adds to defence score', img: './images/testalien.jpg' },
+                ],
                 vueCanvas: null,
-                rectWidth: 200,
+                // rectWidth: 200,
+                construction: null,
                 userImage: './images/testalien.jpg',
                 score: null,
                 gameProgress: {
@@ -74,28 +102,67 @@
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
         },
+        watch: {
+
+        },
         methods: {
             startGame() {
                 // Start the timer
             },
-            drawRect() {
+            build() {
                 // clear canvas
-                this.vueCanvas.clearRect(0, 0, 400, 200);
+                console.log(this.value.title)
+                let width;
+                let height;
+                let colour;
+
+                switch(this.value.title) {
+                    case "Quarry":
+                        width = 10
+                        height = 20
+                        colour = 'grey'
+                        break;
+                    case "Library":
+                        width = 30
+                        height = 30
+                        colour = 'red'
+                        break;
+                    case "Defender":
+                        width = 5
+                        height = 5
+                        colour = 'blue'
+                        break;
+                    default:
+                        width = 1
+                        height = 1
+                        colour = 'black'
+                }
+                // this.vueCanvas.clearRect(0, 0, 400, 200);
 
                 // draw rect
                 this.vueCanvas.beginPath();
-                this.vueCanvas.rect(20, 20, this.rectWidth, 100);
+                this.vueCanvas.rect(20, 20, width, height);
+                this.vueCanvas.strokeStyle = colour
                 this.vueCanvas.stroke();
             },
             goHome() {
                 // Save game with axios.
-                axios.post('/game-progress', this.gameProgress).then(response => {
-                    alert('Game saved!');
-                });
+                this.saveProgress()
 
                 // Take user back to home screen
                 this.$emit('clicked', 'test')
             },
+            addToProgress(value) {
+                this.timer = value
+            },
+            saveProgress() {
+                axios.post('/game-progress', this.gameProgress).then(response => {
+                    alert('Game saved!');
+                });
+            },
+            customLabel ({ title, desc }) {
+                return `${title} – ${desc}`
+            }
         }
     }
 </script>
