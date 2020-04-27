@@ -17,3 +17,6 @@ Route::get('/', [
 ]);
 
 Route::post('/submit', 'EntryController@submit');
+
+Route::post('/game-progress', 'EntryController@saveGame');
+

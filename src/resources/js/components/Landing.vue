@@ -29,7 +29,7 @@
 
     export default {
         mixins: [],
-        props: {},
+        props: ['time'],
         components: {
             UserStore,
             Welcome,
@@ -38,7 +38,7 @@
         data() {
             return {
                 create: false,
-                showGame: false
+                showGame: false,
             }
         },
         methods: {

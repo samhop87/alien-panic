@@ -1936,17 +1936,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['time'],
   data: function data() {
     return {
       vueCanvas: null,
-      rectWidth: 200
+      rectWidth: 200,
+      userImage: './images/testalien.jpg',
+      score: null,
+      gameProgress: {
+        resources: {
+          rocks: null,
+          magic: null
+        },
+        buildings: {
+          quarry: null,
+          books: null
+        },
+        timer: null
+      }
     };
   },
   mounted: function mounted() {
     this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
   },
   methods: {
+    startGame: function startGame() {// Start the timer
+    },
     drawRect: function drawRect() {
       // clear canvas
       this.vueCanvas.clearRect(0, 0, 400, 200); // draw rect
@@ -1956,6 +1995,11 @@ __webpack_require__.r(__webpack_exports__);
       this.vueCanvas.stroke();
     },
     goHome: function goHome() {
+      // Save game with axios.
+      axios.post('/game-progress', this.gameProgress).then(function (response) {
+        alert('Game saved!');
+      }); // Take user back to home screen
+
       this.$emit('clicked', 'test');
     }
   }
@@ -2004,7 +2048,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [],
-  props: {},
+  props: ['time'],
   components: {
     UserStore: _UserStore__WEBPACK_IMPORTED_MODULE_0__["default"],
     Welcome: _Welcome__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -2031,6 +2075,47 @@ __webpack_require__.r(__webpack_exports__);
       console.log("hits the parent");
       this.showGame = true;
       this.create = false;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Timer.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Timer.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      timerCount: 30
+    };
+  },
+  watch: {
+    timerCount: {
+      handler: function handler(value) {
+        var _this = this;
+
+        if (value > 0) {
+          setTimeout(function () {
+            _this.timerCount--;
+            $emit;
+          }, 60000);
+        }
+      },
+      immediate: true // This ensures the watcher is triggered upon creation
+
     }
   }
 });
@@ -37827,44 +37912,114 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "container mx-auto w-3/4 flex flex-col h-screen justify-center items-center"
-    },
-    [
-      _c("div", [
+  return _c("div", { staticClass: "h-screen" }, [
+    _c(
+      "div",
+      {
+        staticClass:
+          "container mx-auto w-3/4 flex flex-col h-full py-1 justify-center items-center"
+      },
+      [
         _c(
-          "button",
-          {
-            staticClass:
-              "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-            attrs: { type: "button" },
-            on: { click: _vm.goHome }
-          },
-          [_vm._v("Go back to home screen\n        ")]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", [
+          "div",
+          { staticClass: "flex flex-row container w-full justify-around" },
+          [
+            _c(
+              "button",
+              {
+                staticClass:
+                  "\n            w-1/3 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                attrs: { type: "button" },
+                on: { click: _vm.startGame }
+              },
+              [_vm._v("Start Game\n            ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "\n            w-1/3 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                attrs: { type: "button" },
+                on: { click: _vm.goHome }
+              },
+              [_vm._v("Save and Quit\n            ")]
+            )
+          ]
+        ),
+        _vm._v(" "),
         _c(
-          "button",
-          {
-            staticClass:
-              "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-            attrs: { type: "button" },
-            on: { click: _vm.drawRect }
-          },
-          [_vm._v("Draw rectangle\n        ")]
-        )
-      ])
-    ]
-  )
+          "div",
+          { staticClass: "container mx-auto w-full flex flex-row py-2" },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-1/3 container mx-auto flex flex-row justify-between items-center"
+              },
+              [
+                _c("p", { staticClass: "font-display" }, [
+                  _vm._v("Alien attack in: ")
+                ]),
+                _vm._v(" "),
+                _c("timer")
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-1/3 container mx-auto flex flex-row justify-between items-center"
+              },
+              [
+                _c("p", { staticClass: "font-display" }, [_vm._v("Username")]),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "w-1/3",
+                  attrs: { src: _vm.userImage }
+                })
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "button",
+            {
+              staticClass:
+                "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+              attrs: { type: "button" },
+              on: { click: _vm.drawRect }
+            },
+            [_vm._v("Draw rectangle\n            ")]
+          )
+        ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "w-1/3 container mx-auto flex flex-row justify-center items-center"
+      },
+      [_c("p", { staticClass: "font-display" }, [_vm._v("Score: **")])]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -37924,6 +38079,32 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c& ***!
+  \********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("p", { staticClass: "font-display" }, [_vm._v(_vm._s(_vm.timerCount))])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50416,6 +50597,7 @@ Vue.component('welcome', __webpack_require__(/*! ./components/Welcome.vue */ "./
 Vue.component('user-store', __webpack_require__(/*! ./components/UserStore */ "./resources/js/components/UserStore.vue")["default"]);
 Vue.component('landing', __webpack_require__(/*! ./components/Landing */ "./resources/js/components/Landing.vue")["default"]);
 Vue.component('game-screen', __webpack_require__(/*! ./components/GameScreen */ "./resources/js/components/GameScreen.vue")["default"]);
+Vue.component('timer', __webpack_require__(/*! ./components/Timer */ "./resources/js/components/Timer.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -50606,6 +50788,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Landing_vue_vue_type_template_id_15bf0008___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Landing_vue_vue_type_template_id_15bf0008___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Timer.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/components/Timer.vue ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Timer_vue_vue_type_template_id_54f9552c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Timer.vue?vue&type=template&id=54f9552c& */ "./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&");
+/* harmony import */ var _Timer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Timer.vue?vue&type=script&lang=js& */ "./resources/js/components/Timer.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Timer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Timer_vue_vue_type_template_id_54f9552c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Timer_vue_vue_type_template_id_54f9552c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Timer.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Timer.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/Timer.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Timer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Timer.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Timer.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Timer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/Timer.vue?vue&type=template&id=54f9552c& ***!
+  \**************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Timer_vue_vue_type_template_id_54f9552c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Timer.vue?vue&type=template&id=54f9552c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Timer.vue?vue&type=template&id=54f9552c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Timer_vue_vue_type_template_id_54f9552c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Timer_vue_vue_type_template_id_54f9552c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

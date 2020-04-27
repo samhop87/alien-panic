@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EntryController extends Controller
@@ -11,7 +12,13 @@ class EntryController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        return view('index');
+        $users = User::all();
+        $time  = Carbon::now();
+        return view('index', compact(['users', 'time']));
+    }
+
+    public function saveGame() {
+        dd("hit");
     }
 
     public function submit(Request $request) {

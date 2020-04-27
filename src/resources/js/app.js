@@ -20,6 +20,7 @@ Vue.component('welcome', require('./components/Welcome.vue').default);
 Vue.component('user-store', require('./components/UserStore').default);
 Vue.component('landing', require('./components/Landing').default);
 Vue.component('game-screen', require('./components/GameScreen').default);
+Vue.component('timer', require('./components/Timer').default);
 
 
 /**

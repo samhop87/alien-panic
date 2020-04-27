@@ -13,7 +13,7 @@
     </head>
     <body>
     <div id="app">
-        <landing></landing>
+        <landing time="'{{ $time }}'"></landing>
     </div>
     <script type="text/javascript" src="js/app.js"></script>
     </body>
