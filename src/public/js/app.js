@@ -1974,11 +1974,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1990,30 +1985,34 @@ __webpack_require__.r(__webpack_exports__);
       value: null,
       options: [{
         title: 'Quarry',
-        desc: 'Produces rocks',
-        img: './images/testalien.jpg'
+        desc: 'rocks',
+        img: './images/testalien.jpg',
+        alt: 'test'
       }, {
         title: 'Library',
-        desc: 'Produces magic',
-        img: './images/testalien.jpg'
+        desc: 'magic',
+        img: './images/testalien.jpg',
+        alt: 'test'
       }, {
         title: 'Defender',
-        desc: 'Adds to defence score',
-        img: './images/testalien.jpg'
+        desc: 'a better defence score',
+        img: './images/testalien.jpg',
+        alt: 'test'
       }],
       vueCanvas: null,
-      // rectWidth: 200,
-      construction: null,
+      construction: [],
+      coordinateList: [],
       userImage: './images/testalien.jpg',
       score: null,
       gameProgress: {
         resources: {
           rocks: null,
-          magic: null
+          magic: null,
+          defenders: null
         },
         buildings: {
           quarry: null,
-          books: null
+          libraries: null
         },
         timer: null
       }
@@ -2026,9 +2025,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     startGame: function startGame() {// Start the timer
     },
+    pay: function pay() {// pay for the building with resources
+    },
     build: function build() {
-      // clear canvas
-      console.log(this.value.title);
       var width;
       var height;
       var colour;
@@ -2056,33 +2055,52 @@ __webpack_require__.r(__webpack_exports__);
           width = 1;
           height = 1;
           colour = 'black';
-      } // this.vueCanvas.clearRect(0, 0, 400, 200);
-      // draw rect
+      } // Determine coordinates for new game object
+      // These coordinates must be defined here.
+      // Which means check on coordinate list must occur prior.
 
+
+      var latStart; // top left
+
+      var longStart; // bottom left
+
+      var calcLat; // top right
+
+      var calcLong; // bottom right
+      // Add game object to canvas
 
       this.vueCanvas.beginPath();
-      this.vueCanvas.rect(20, 20, width, height);
+      this.vueCanvas.rect(latStart, longStart, width, height);
       this.vueCanvas.strokeStyle = colour;
       this.vueCanvas.stroke();
+      this.construction.push({
+        type: this.value.title,
+        ax: latStart,
+        ay: longStart,
+        bx: calcLat,
+        by: calcLong
+      }); // Calculate used points and add to coordinate list array
+      // Get range between latStart and calcLat (this is x coordinates used)
+      // Get range between longStart and calcLong (this is y coordinates used)
+
+      this.coordinateList.push();
     },
     goHome: function goHome() {
       // Save game with axios.
       this.saveProgress(); // Take user back to home screen
+      // TODO: Send back clearing argument; clear current progress and logout user.
+      // this.vueCanvas.clearRect(0, 0, 400, 200);
 
       this.$emit('clicked', 'test');
     },
     addToProgress: function addToProgress(value) {
-      this.timer = value;
+      this.timer = value; // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+      // TODO: Add to resources depending on what resource production there is.
     },
     saveProgress: function saveProgress() {
       axios.post('/game-progress', this.gameProgress).then(function (response) {
         alert('Game saved!');
       });
-    },
-    customLabel: function customLabel(_ref) {
-      var title = _ref.title,
-          desc = _ref.desc;
-      return "".concat(title, " \u2013 ").concat(desc);
     }
   }
 });
@@ -38079,48 +38097,23 @@ var render = function() {
           [
             _c("multiselect", {
               attrs: {
-                options: _vm.options,
                 "deselect-label": "Can't remove this value",
-                "track-by": "name",
-                label: "name",
+                "track-by": "title",
+                label: "title",
                 placeholder: "Select one",
+                options: _vm.options,
                 searchable: false,
                 "allow-empty": false
               },
               scopedSlots: _vm._u([
                 {
                   key: "singleLabel",
-                  fn: function(props) {
+                  fn: function(ref) {
+                    var option = ref.option
                     return [
-                      _c("img", {
-                        staticClass: "option__image",
-                        attrs: { src: props.option.img, alt: "No Man’s Sky" }
-                      }),
-                      _c("span", { staticClass: "option__desc" }, [
-                        _c("span", { staticClass: "option__title" }, [
-                          _vm._v(_vm._s(props.option.title))
-                        ])
-                      ])
-                    ]
-                  }
-                },
-                {
-                  key: "option",
-                  fn: function(props) {
-                    return [
-                      _c("img", {
-                        staticClass: "option__image",
-                        attrs: { src: props.option.img, alt: "No Man’s Sky" }
-                      }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "option__desc" }, [
-                        _c("span", { staticClass: "option__title" }, [
-                          _vm._v(_vm._s(props.option.title))
-                        ]),
-                        _c("span", { staticClass: "option__small" }, [
-                          _vm._v(_vm._s(props.option.desc))
-                        ])
-                      ])
+                      _c("strong", [_vm._v(_vm._s(option.title))]),
+                      _vm._v(" produces "),
+                      _c("strong", [_vm._v("  " + _vm._s(option.desc))])
                     ]
                   }
                 }

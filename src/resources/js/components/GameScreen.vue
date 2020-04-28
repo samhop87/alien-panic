@@ -37,21 +37,16 @@
             </div>
 
             <div class="border-4 border-solid border-red-300">
-            <multiselect
-                :options="options"
-                v-model="value"
-                deselect-label="Can't remove this value"
-                track-by="name"
-                label="name"
-                placeholder="Select one"
-                :searchable="false"
-                :allow-empty="false"
-            >
-                <template slot="singleLabel" slot-scope="props"><img class="option__image" :src="props.option.img" alt="No Man’s Sky"><span class="option__desc"><span class="option__title">{{ props.option.title }}</span></span></template>
-                <template slot="option" slot-scope="props"><img class="option__image" :src="props.option.img" alt="No Man’s Sky">
-                    <div class="option__desc"><span class="option__title">{{ props.option.title }}</span><span class="option__small">{{ props.option.desc }}</span></div>
-                </template>
-            </multiselect>
+                <multiselect v-model="value"
+                             deselect-label="Can't remove this value"
+                             track-by="title"
+                             label="title"
+                             placeholder="Select one"
+                             :options="options"
+                             :searchable="false"
+                             :allow-empty="false">
+                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.title }}</strong> produces <strong>  {{ option.desc }}</strong></template>
+                </multiselect>
             </div>
 
             <div>
@@ -77,23 +72,24 @@
             return {
                 value: null,
                 options: [
-                    { title: 'Quarry', desc: 'Produces rocks', img: './images/testalien.jpg' },
-                    { title: 'Library', desc: 'Produces magic', img: './images/testalien.jpg' },
-                    { title: 'Defender', desc: 'Adds to defence score', img: './images/testalien.jpg' },
+                    { title: 'Quarry', desc: 'rocks', img: './images/testalien.jpg', alt: 'test'},
+                    { title: 'Library', desc: 'magic', img: './images/testalien.jpg', alt: 'test' },
+                    { title: 'Defender', desc: 'a better defence score', img: './images/testalien.jpg', alt: 'test' },
                 ],
                 vueCanvas: null,
-                // rectWidth: 200,
-                construction: null,
+                construction: [],
+                coordinateList: [],
                 userImage: './images/testalien.jpg',
                 score: null,
                 gameProgress: {
                     resources: {
                         rocks: null,
                         magic: null,
+                        defenders: null,
                     },
                     buildings: {
                         quarry: null,
-                        books: null
+                        libraries: null
                     },
                     timer: null,
                 }
@@ -109,9 +105,10 @@
             startGame() {
                 // Start the timer
             },
+            pay() {
+              // pay for the building with resources
+            },
             build() {
-                // clear canvas
-                console.log(this.value.title)
                 let width;
                 let height;
                 let colour;
@@ -137,32 +134,57 @@
                         height = 1
                         colour = 'black'
                 }
-                // this.vueCanvas.clearRect(0, 0, 400, 200);
 
-                // draw rect
+                // Determine coordinates for new game object
+                // These coordinates must be defined here.
+                // Which means check on coordinate list must occur prior.
+                let latStart; // top left
+                let longStart; // bottom left
+                let calcLat; // top right
+                let calcLong; // bottom right
+
+
+                // Add game object to canvas
                 this.vueCanvas.beginPath();
-                this.vueCanvas.rect(20, 20, width, height);
+                this.vueCanvas.rect(latStart, longStart, width, height);
                 this.vueCanvas.strokeStyle = colour
                 this.vueCanvas.stroke();
+
+                this.construction.push({
+                    type: this.value.title,
+                    ax: latStart,
+                    ay: longStart,
+                    bx: calcLat,
+                    by: calcLong
+                })
+
+                // Calculate used points and add to coordinate list array
+                // Get range between latStart and calcLat (this is x coordinates used)
+                // Get range between longStart and calcLong (this is y coordinates used)
+
+                this.coordinateList.push()
             },
             goHome() {
                 // Save game with axios.
                 this.saveProgress()
 
                 // Take user back to home screen
+                // TODO: Send back clearing argument; clear current progress and logout user.
+                // this.vueCanvas.clearRect(0, 0, 400, 200);
+
                 this.$emit('clicked', 'test')
             },
             addToProgress(value) {
                 this.timer = value
+
+                // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+                // TODO: Add to resources depending on what resource production there is.
             },
             saveProgress() {
                 axios.post('/game-progress', this.gameProgress).then(response => {
                     alert('Game saved!');
                 });
             },
-            customLabel ({ title, desc }) {
-                return `${title} – ${desc}`
-            }
         }
     }
 </script>
