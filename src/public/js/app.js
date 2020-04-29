@@ -1986,6 +1986,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2027,6 +2032,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         Defender: []
       },
       coordinateList: {
+        controlledY: 10,
         x: [],
         y: []
       },
@@ -2034,13 +2040,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       score: null,
       gameProgress: {
         resources: {
-          rocks: null,
-          magic: null,
-          defenders: null
+          rocks: 0,
+          magic: 0,
+          defenders: 0
         },
         buildings: {
-          quarry: null,
-          libraries: null
+          quarry: 0,
+          libraries: 0
         },
         timer: null
       }
@@ -2059,11 +2065,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     build: function build() {
       var cw = document.getElementById("gameCanvas").width;
+      var ch = document.getElementById("gameCanvas").height;
       var width = null;
       var height = null;
       var colour = null;
       var store = null;
-      var type = this.value.title;
+      var type = this.value.title; // We need to work out the cost/payment issue here, and adjust totals accordingly.
 
       switch (type) {
         case "Quarry":
@@ -2071,6 +2078,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           height = 20;
           colour = 'grey';
           store = this.construction.Quarry;
+          this.gameProgress.buildings.quarry++;
           break;
 
         case "Library":
@@ -2078,6 +2086,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           height = 30;
           colour = 'red';
           store = this.construction.Library;
+          this.gameProgress.buildings.libraries++;
           break;
 
         case "Defender":
@@ -2105,17 +2114,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         x = 10;
       }
 
-      y = 10;
+      y = this.coordinateList.controlledY;
 
       if (this.coordinateList.x.length !== 0) {
         x = Math.max.apply(Math, _toConsumableArray(this.coordinateList.x)) + 10; // Clear the x coordinate array
-        // This didn't work...
-
-        this.coordinateList.x = [];
 
         if (x + width >= cw) {
+          // This only happens once...
+          // We need for it to adjust the value of Y for whole row.
           y = Math.max.apply(Math, _toConsumableArray(this.coordinateList.y)) + 10;
+          this.coordinateList.controlledY = y;
           x = 10;
+          this.coordinateList.x = [];
+        }
+
+        if (y + height >= ch) {
+          this.coordinateList.y = [];
+          this.fireAlert();
+          return;
         }
       }
 
@@ -2123,9 +2139,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var calcLat = x + width; // Add game object to canvas
 
       this.vueCanvas.beginPath();
-      this.vueCanvas.rect(x, y, width, height);
-      console.log(x, y, width, height);
-      this.vueCanvas.strokeStyle = colour;
+      this.vueCanvas.fillStyle = colour;
+      this.vueCanvas.fillRect(x, y, width, height);
       this.vueCanvas.stroke(); // This stores the individual game objects in the construction array
 
       store.push({
@@ -2154,6 +2169,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         y++;
       }
     },
+    fireAlert: function fireAlert() {
+      alert("you have no more room in your town");
+    },
     goHome: function goHome() {
       // Save game with axios.
       this.saveProgress(); // Take user back to home screen
@@ -2163,8 +2181,22 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.$emit('clicked', 'test');
     },
     addToProgress: function addToProgress(value) {
-      this.timer = value; // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
-      // TODO: Add to resources depending on what resource production there is.
+      this.timer = value;
+      this.addResources(); // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+    },
+    addResources: function addResources() {
+      // TODO: Refactor this to be extendable.
+      for (var i = 0; i <= this.gameProgress.buildings.libraries; i++) {
+        this.gameProgress.resources.magic += 1;
+      }
+
+      for (var _i = 0; _i <= this.gameProgress.buildings.quarry; _i++) {
+        this.gameProgress.resources.rocks += 1;
+      } // Add in defenders - the more defenders you have, the higher your score.
+      // The alien attack should be on a sliding scale - if the aliens have a MUCH higher score,
+      // it should destroy more buildings and defenders etc.
+      // If the aliens only JUST win, it should be minimal destruction.
+
     },
     saveProgress: function saveProgress() {
       axios.post('/game-progress', this.gameProgress).then(function (response) {
@@ -38157,6 +38189,16 @@ var render = function() {
             )
           ]
         ),
+        _vm._v(" "),
+        _c("div", [
+          _c("p", [
+            _vm._v("Magic: " + _vm._s(_vm.gameProgress.resources.magic))
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v("Rocks: " + _vm._s(_vm.gameProgress.resources.rocks))
+          ])
+        ]),
         _vm._v(" "),
         _vm._m(1),
         _vm._v(" "),

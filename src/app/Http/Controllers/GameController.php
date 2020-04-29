@@ -10,8 +10,12 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
 
-    public function saveGame() {
-        dd("hit");
-        GameProgress::create([]);
+    public function saveGame(Request $request) {
+        dd("hit", $request->resources['rocks']);
+        GameProgress::create([
+            'rocks' => $request->resources->rocks,
+            'magic' => $request->resources->magic,
+            'timeRemaining' => $request->timer,
+        ]);
     }
 }

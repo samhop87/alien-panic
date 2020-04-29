@@ -32,6 +32,11 @@
                 </div>
             </div>
 
+            <div>
+                <p>Magic: {{gameProgress.resources.magic}}</p>
+                <p>Rocks: {{ gameProgress.resources.rocks }}</p>
+            </div>
+
             <div class="w-full">
                 <canvas class="w-full border-solid border-gray-300 border-4" id="gameCanvas"></canvas>
             </div>
@@ -83,6 +88,7 @@
                     Defender: []
                 },
                 coordinateList: {
+                    controlledY: 10,
                     x: [],
                     y: [],
         },
@@ -90,13 +96,13 @@
                 score: null,
                 gameProgress: {
                     resources: {
-                        rocks: null,
-                        magic: null,
-                        defenders: null,
+                        rocks: 0,
+                        magic: 0,
+                        defenders: 0,
                     },
                     buildings: {
-                        quarry: null,
-                        libraries: null
+                        quarry: 0,
+                        libraries: 0
                     },
                     timer: null,
                 }
@@ -119,6 +125,7 @@
             },
             build() {
                 let cw = document.getElementById("gameCanvas").width
+                let ch = document.getElementById("gameCanvas").height
 
                 let width = null;
                 let height = null;
@@ -127,18 +134,22 @@
 
                 let type = this.value.title
 
+                // We need to work out the cost/payment issue here, and adjust totals accordingly.
+
                 switch(type) {
                     case "Quarry":
                         width = 10
                         height = 20
                         colour = 'grey'
                         store = this.construction.Quarry
+                        this.gameProgress.buildings.quarry++
                         break;
                     case "Library":
                         width = 30
                         height = 30
                         colour = 'red'
                         store = this.construction.Library
+                        this.gameProgress.buildings.libraries++
                         break;
                     case "Defender":
                         width = 5
@@ -164,16 +175,23 @@
                     x = 10;
                 }
 
-                y = 10;
+                y = this.coordinateList.controlledY;
 
                 if (this.coordinateList.x.length !== 0) {
                     x = Math.max(...this.coordinateList.x) + 10;
                     // Clear the x coordinate array
-                    // This didn't work...
-                    this.coordinateList.x = [];
                     if ((x + width) >= cw) {
+                        // This only happens once...
+                        // We need for it to adjust the value of Y for whole row.
                         y = Math.max(...this.coordinateList.y) + 10;
+                        this.coordinateList.controlledY = y;
                         x = 10;
+                        this.coordinateList.x = [];
+                    }
+                    if ((y + height >= ch )) {
+                        this.coordinateList.y = [];
+                        this.fireAlert();
+                        return;
                     }
                 }
 
@@ -182,11 +200,8 @@
 
                 // Add game object to canvas
                 this.vueCanvas.beginPath();
-                this.vueCanvas.rect(x, y, width, height);
-
-                console.log(x, y, width, height)
-
-                this.vueCanvas.strokeStyle = colour;
+                this.vueCanvas.fillStyle = colour;
+                this.vueCanvas.fillRect(x, y, width, height);
                 this.vueCanvas.stroke();
 
                 // This stores the individual game objects in the construction array
@@ -198,9 +213,7 @@
                     by: calcLong // bottom left
                 })
 
-
                 // Calculate used points and add to coordinate list array
-
                 while (x <= calcLat) {
                     if (!this.coordinateList.x.includes(x)) {
                         this.coordinateList.x.push(x);
@@ -215,6 +228,9 @@
                     y++;
                 }
             },
+            fireAlert() {
+              alert("you have no more room in your town")
+            },
             goHome() {
                 // Save game with axios.
                 this.saveProgress()
@@ -227,9 +243,22 @@
             },
             addToProgress(value) {
                 this.timer = value
+                this.addResources()
 
                 // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
-                // TODO: Add to resources depending on what resource production there is.
+            },
+            addResources() {
+                // TODO: Refactor this to be extendable.
+              for (let i = 0; i <= this.gameProgress.buildings.libraries; i++) {
+                  this.gameProgress.resources.magic += 1;
+              }
+              for (let i = 0; i <= this.gameProgress.buildings.quarry; i++) {
+                  this.gameProgress.resources.rocks += 1;
+              }
+              // Add in defenders - the more defenders you have, the higher your score.
+                // The alien attack should be on a sliding scale - if the aliens have a MUCH higher score,
+                // it should destroy more buildings and defenders etc.
+                // If the aliens only JUST win, it should be minimal destruction.
             },
             saveProgress() {
                 axios.post('/game-progress', this.gameProgress).then(response => {
