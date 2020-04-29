@@ -72,13 +72,20 @@
             return {
                 value: null,
                 options: [
-                    { title: 'Quarry', desc: 'rocks', img: './images/testalien.jpg', alt: 'test'},
-                    { title: 'Library', desc: 'magic', img: './images/testalien.jpg', alt: 'test' },
-                    { title: 'Defender', desc: 'a better defence score', img: './images/testalien.jpg', alt: 'test' },
+                    { title: 'Quarry', desc: 'rocks', price: {rocks: 5}, img: './images/testalien.jpg', alt: 'test'},
+                    { title: 'Library', desc: 'magic', price: {rocks: 10}, img: './images/testalien.jpg', alt: 'test' },
+                    { title: 'Defender', desc: 'a better defence score', price: {magic: 20}, img: './images/testalien.jpg', alt: 'test' },
                 ],
                 vueCanvas: null,
-                construction: [],
-                coordinateList: [],
+                construction: {
+                    Quarry: [],
+                    Library: [],
+                    Defender: []
+                },
+                coordinateList: {
+                    x: [],
+                    y: [],
+        },
                 userImage: './images/testalien.jpg',
                 score: null,
                 gameProgress: {
@@ -107,62 +114,106 @@
             },
             pay() {
               // pay for the building with resources
+                let rocks = this.gameProgress.resources.rocks
+
             },
             build() {
-                let width;
-                let height;
-                let colour;
+                let cw = document.getElementById("gameCanvas").width
 
-                switch(this.value.title) {
+                let width = null;
+                let height = null;
+                let colour = null;
+                let store = null;
+
+                let type = this.value.title
+
+                switch(type) {
                     case "Quarry":
                         width = 10
                         height = 20
                         colour = 'grey'
+                        store = this.construction.Quarry
                         break;
                     case "Library":
                         width = 30
                         height = 30
                         colour = 'red'
+                        store = this.construction.Library
                         break;
                     case "Defender":
                         width = 5
                         height = 5
                         colour = 'blue'
+                        store = this.construction.Defender
                         break;
                     default:
                         width = 1
                         height = 1
                         colour = 'black'
+                        store = this.construction.Quarry
                 }
 
-                // Determine coordinates for new game object
-                // These coordinates must be defined here.
-                // Which means check on coordinate list must occur prior.
-                let latStart; // top left
-                let longStart; // bottom left
-                let calcLat; // top right
-                let calcLong; // bottom right
+                // x must always be greater than calcLat
+                // except if calcLat is off canvas.
+                // then y must be greater than calcLong
+                // and then back to checking x again.
+                let x;
+                let y;
 
+                if (this.coordinateList.x.length === 0) {
+                    x = 10;
+                }
+
+                y = 10;
+
+                if (this.coordinateList.x.length !== 0) {
+                    x = Math.max(...this.coordinateList.x) + 10;
+                    // Clear the x coordinate array
+                    // This didn't work...
+                    this.coordinateList.x = [];
+                    if ((x + width) >= cw) {
+                        y = Math.max(...this.coordinateList.y) + 10;
+                        x = 10;
+                    }
+                }
+
+                let calcLong = y + height;
+                let calcLat = x + width;
 
                 // Add game object to canvas
                 this.vueCanvas.beginPath();
-                this.vueCanvas.rect(latStart, longStart, width, height);
-                this.vueCanvas.strokeStyle = colour
+                this.vueCanvas.rect(x, y, width, height);
+
+                console.log(x, y, width, height)
+
+                this.vueCanvas.strokeStyle = colour;
                 this.vueCanvas.stroke();
 
-                this.construction.push({
-                    type: this.value.title,
-                    ax: latStart,
-                    ay: longStart,
-                    bx: calcLat,
-                    by: calcLong
+                // This stores the individual game objects in the construction array
+                store.push({
+                    type: type,
+                    ax: x,
+                    ay: y,
+                    bx: calcLat, // top right
+                    by: calcLong // bottom left
                 })
 
-                // Calculate used points and add to coordinate list array
-                // Get range between latStart and calcLat (this is x coordinates used)
-                // Get range between longStart and calcLong (this is y coordinates used)
 
-                this.coordinateList.push()
+                // Calculate used points and add to coordinate list array
+
+                while (x <= calcLat) {
+                    if (!this.coordinateList.x.includes(x)) {
+                        this.coordinateList.x.push(x);
+                    }
+                    x++;
+                }
+
+                while (y <= calcLong) {
+                    if (!this.coordinateList.y.includes(y)) {
+                        this.coordinateList.y.push(y);
+                    }
+                    y++;
+                }
             },
             goHome() {
                 // Save game with axios.

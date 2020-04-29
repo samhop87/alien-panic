@@ -1910,6 +1910,18 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 //
 //
 //
@@ -1986,22 +1998,38 @@ __webpack_require__.r(__webpack_exports__);
       options: [{
         title: 'Quarry',
         desc: 'rocks',
+        price: {
+          rocks: 5
+        },
         img: './images/testalien.jpg',
         alt: 'test'
       }, {
         title: 'Library',
         desc: 'magic',
+        price: {
+          rocks: 10
+        },
         img: './images/testalien.jpg',
         alt: 'test'
       }, {
         title: 'Defender',
         desc: 'a better defence score',
+        price: {
+          magic: 20
+        },
         img: './images/testalien.jpg',
         alt: 'test'
       }],
       vueCanvas: null,
-      construction: [],
-      coordinateList: [],
+      construction: {
+        Quarry: [],
+        Library: [],
+        Defender: []
+      },
+      coordinateList: {
+        x: [],
+        y: []
+      },
       userImage: './images/testalien.jpg',
       score: null,
       gameProgress: {
@@ -2025,65 +2053,106 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     startGame: function startGame() {// Start the timer
     },
-    pay: function pay() {// pay for the building with resources
+    pay: function pay() {
+      // pay for the building with resources
+      var rocks = this.gameProgress.resources.rocks;
     },
     build: function build() {
-      var width;
-      var height;
-      var colour;
+      var cw = document.getElementById("gameCanvas").width;
+      var width = null;
+      var height = null;
+      var colour = null;
+      var store = null;
+      var type = this.value.title;
 
-      switch (this.value.title) {
+      switch (type) {
         case "Quarry":
           width = 10;
           height = 20;
           colour = 'grey';
+          store = this.construction.Quarry;
           break;
 
         case "Library":
           width = 30;
           height = 30;
           colour = 'red';
+          store = this.construction.Library;
           break;
 
         case "Defender":
           width = 5;
           height = 5;
           colour = 'blue';
+          store = this.construction.Defender;
           break;
 
         default:
           width = 1;
           height = 1;
           colour = 'black';
-      } // Determine coordinates for new game object
-      // These coordinates must be defined here.
-      // Which means check on coordinate list must occur prior.
+          store = this.construction.Quarry;
+      } // x must always be greater than calcLat
+      // except if calcLat is off canvas.
+      // then y must be greater than calcLong
+      // and then back to checking x again.
 
 
-      var latStart; // top left
+      var x;
+      var y;
 
-      var longStart; // bottom left
+      if (this.coordinateList.x.length === 0) {
+        x = 10;
+      }
 
-      var calcLat; // top right
+      y = 10;
 
-      var calcLong; // bottom right
-      // Add game object to canvas
+      if (this.coordinateList.x.length !== 0) {
+        x = Math.max.apply(Math, _toConsumableArray(this.coordinateList.x)) + 10; // Clear the x coordinate array
+        // This didn't work...
+
+        this.coordinateList.x = [];
+
+        if (x + width >= cw) {
+          y = Math.max.apply(Math, _toConsumableArray(this.coordinateList.y)) + 10;
+          x = 10;
+        }
+      }
+
+      var calcLong = y + height;
+      var calcLat = x + width; // Add game object to canvas
 
       this.vueCanvas.beginPath();
-      this.vueCanvas.rect(latStart, longStart, width, height);
+      this.vueCanvas.rect(x, y, width, height);
+      console.log(x, y, width, height);
       this.vueCanvas.strokeStyle = colour;
-      this.vueCanvas.stroke();
-      this.construction.push({
-        type: this.value.title,
-        ax: latStart,
-        ay: longStart,
-        bx: calcLat,
-        by: calcLong
-      }); // Calculate used points and add to coordinate list array
-      // Get range between latStart and calcLat (this is x coordinates used)
-      // Get range between longStart and calcLong (this is y coordinates used)
+      this.vueCanvas.stroke(); // This stores the individual game objects in the construction array
 
-      this.coordinateList.push();
+      store.push({
+        type: type,
+        ax: x,
+        ay: y,
+        bx: calcLat,
+        // top right
+        by: calcLong // bottom left
+
+      }); // Calculate used points and add to coordinate list array
+
+      while (x <= calcLat) {
+        if (!this.coordinateList.x.includes(x)) {
+          this.coordinateList.x.push(x);
+        }
+
+        x++;
+      }
+
+      while (y <= calcLong) {
+        if (!this.coordinateList.y.includes(y)) {
+          this.coordinateList.y.push(y);
+        }
+
+        y++;
+      }
     },
     goHome: function goHome() {
       // Save game with axios.
