@@ -10,7 +10,7 @@
 
         data() {
             return {
-                timerCount: 30
+                timerCount: 5
             }
         },
 

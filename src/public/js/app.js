@@ -2041,7 +2041,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         },
         Library: {
           rocks: 10,
-          magic: 0
+          magic: 1
         },
         Defender: {
           rocks: 0,
@@ -2077,26 +2077,49 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     startGame: function startGame() {// Start the timer
     },
     checkPrice: function checkPrice(type) {
-      console.log("hits the check price function"); // pay for the building with resources
-
+      // pay for the building with resources
       var rocksTotal = this.gameProgress.resources.rocks;
       var magicTotal = this.gameProgress.resources.magic;
-      var price = null;
+      var totalCost = null;
 
       switch (type) {
         case "Quarry":
-          price = this.priceList.Quarry;
-          var totalCost = this.calculatePrice(price);
+          totalCost = this.calculatePrice(this.priceList.Quarry);
 
-          if (totalCost[0] > rocksTotal) {
-            alert("You don't have enough rocks");
+          if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
+            alert("You don't have enough resources to build any quarries");
             return false;
-          } else {// PAY FOR IT.
+          } else {
+            this.gameProgress.resources.rocks = rocksTotal - totalCost[0];
+            this.gameProgress.resources.magic = magicTotal - totalCost[1];
           }
 
           break;
 
         case "Library":
+          totalCost = this.calculatePrice(this.priceList.Library);
+
+          if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
+            alert("No one is going to build a library for free, brah");
+            return false;
+          } else {
+            this.gameProgress.resources.rocks = rocksTotal - totalCost[0];
+            this.gameProgress.resources.magic = magicTotal - totalCost[1];
+          }
+
+          break;
+
+        case "Defender":
+          totalCost = this.calculatePrice(this.priceList.Defender);
+
+          if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
+            alert("You don't have enough resources to train any defenders");
+            return false;
+          } else {
+            this.gameProgress.resources.rocks = rocksTotal - totalCost[0];
+            this.gameProgress.resources.magic = magicTotal - totalCost[1];
+          }
+
           break;
       }
     },
@@ -2142,6 +2165,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           colour = 'grey';
           store = this.construction.Quarry;
           this.gameProgress.buildings.quarry++;
+          this.gameProgress.score++;
           break;
 
         case "Library":
@@ -2150,6 +2174,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           colour = 'red';
           store = this.construction.Library;
           this.gameProgress.buildings.libraries++;
+          this.gameProgress.score++;
           break;
 
         case "Defender":
@@ -2157,6 +2182,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           height = 5;
           colour = 'blue';
           store = this.construction.Defender;
+          this.gameProgress.resources.defenders++;
+          this.gameProgress.score += 10;
           break;
 
         default:
@@ -2193,7 +2220,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         if (y + height >= ch) {
           this.coordinateList.y = [];
-          this.fireAlert();
+          this.fireAlert("You have no more room left in your town!");
           return;
         }
       }
@@ -2232,8 +2259,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         y++;
       }
     },
-    fireAlert: function fireAlert() {
-      alert("you have no more room in your town");
+    fireAlert: function fireAlert(msg) {
+      alert(msg);
     },
     goHome: function goHome() {
       // Save game with axios.
@@ -2246,7 +2273,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     addToProgress: function addToProgress(value) {
       this.timer = value;
       this.addResources();
-      this.initiateRandomEvent(); // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+      this.initiateRandomEvent();
+
+      if (value === 2) {
+        this.alienWarning();
+      }
+
+      if (value === 0) {
+        this.alienAttack();
+      } // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+
     },
     addResources: function addResources() {
       // TODO: Refactor this to be extendable.
@@ -2265,6 +2301,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     initiateRandomEvent: function initiateRandomEvent() {
       var _int = this.rollDice();
+    },
+    alienWarning: function alienWarning() {
+      console.log("WARNING! Aliens are about to attack. It looks like X aliens are coming."); // TODO: Perform calculation to determine the results of an alien attack.
+
+      console.log("Currently, your town may not survive.");
+    },
+    alienAttack: function alienAttack() {
+      console.log("the aliens have arrived"); // TODO: Show an alien popup.
+      // TODO: Some kind of animation to show a battle is taking place?
+      // TODO: Calculate damage based on alien strength vs. score.
+      // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
+      //  array, and randomly destroy the number by using clearRect() on their coordinates.
     },
     rollDice: function rollDice() {
       return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
@@ -2371,7 +2419,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      timerCount: 30
+      timerCount: 5
     };
   },
   watch: {
@@ -38353,9 +38401,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full" }, [
+    return _c("div", { staticClass: "w-full flex justify-center my-4" }, [
       _c("canvas", {
-        staticClass: "w-full border-solid border-gray-300 border-4",
+        staticClass: "border-solid border-gray-300 border-4 bg-green-200",
         attrs: { id: "gameCanvas" }
       })
     ])

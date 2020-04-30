@@ -40,8 +40,8 @@
                 </ul>
             </div>
 
-            <div class="w-full">
-                <canvas class="w-full border-solid border-gray-300 border-4" id="gameCanvas"></canvas>
+            <div class="w-full flex justify-center my-4">
+                <canvas class="border-solid border-gray-300 border-4 bg-green-200" id="gameCanvas"></canvas>
             </div>
 
             <div class="border-4 border-solid border-red-300">
@@ -103,7 +103,7 @@
                     },
                     Library: {
                         rocks: 10,
-                        magic: 0
+                        magic: 1
                     },
                     Defender: {
                         rocks: 0,
@@ -140,24 +140,42 @@
                 // Start the timer
             },
             checkPrice(type) {
-                console.log("hits the check price function")
                 // pay for the building with resources
                 let rocksTotal = this.gameProgress.resources.rocks
                 let magicTotal = this.gameProgress.resources.magic
-                let price = null
+                let totalCost = null;
+
 
                 switch (type) {
                     case "Quarry":
-                        price = this.priceList.Quarry
-                        let totalCost = this.calculatePrice(price)
-                        if (totalCost[0] > rocksTotal) {
-                            alert("You don't have enough rocks")
+                        totalCost = this.calculatePrice(this.priceList.Quarry)
+                        if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
+                            alert("You don't have enough resources to build any quarries")
                             return false;
                         } else {
-                            // PAY FOR IT.
+                            this.gameProgress.resources.rocks = rocksTotal - totalCost[0]
+                            this.gameProgress.resources.magic = magicTotal - totalCost[1]
                         }
                         break;
                     case "Library":
+                        totalCost = this.calculatePrice(this.priceList.Library)
+                        if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
+                            alert("No one is going to build a library for free, brah")
+                            return false;
+                        } else {
+                            this.gameProgress.resources.rocks = rocksTotal - totalCost[0]
+                            this.gameProgress.resources.magic = magicTotal - totalCost[1]
+                        }
+                        break;
+                    case "Defender":
+                        totalCost = this.calculatePrice(this.priceList.Defender)
+                        if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
+                            alert("You don't have enough resources to train any defenders")
+                            return false;
+                        } else {
+                            this.gameProgress.resources.rocks = rocksTotal - totalCost[0]
+                            this.gameProgress.resources.magic = magicTotal - totalCost[1]
+                        }
                         break;
                 }
             },
@@ -198,6 +216,7 @@
                         colour = 'grey'
                         store = this.construction.Quarry
                         this.gameProgress.buildings.quarry++
+                        this.gameProgress.score++
                         break;
                     case "Library":
                         width = 30
@@ -205,12 +224,15 @@
                         colour = 'red'
                         store = this.construction.Library
                         this.gameProgress.buildings.libraries++
+                        this.gameProgress.score++
                         break;
                     case "Defender":
                         width = 5
                         height = 5
                         colour = 'blue'
                         store = this.construction.Defender
+                        this.gameProgress.resources.defenders++
+                        this.gameProgress.score += 10
                         break;
                     default:
                         width = 1
@@ -245,7 +267,7 @@
                     }
                     if ((y + height >= ch)) {
                         this.coordinateList.y = [];
-                        this.fireAlert();
+                        this.fireAlert("You have no more room left in your town!");
                         return;
                     }
                 }
@@ -283,8 +305,8 @@
                     y++;
                 }
             },
-            fireAlert() {
-                alert("you have no more room in your town")
+            fireAlert(msg) {
+                alert(msg)
             },
             goHome() {
                 // Save game with axios.
@@ -300,6 +322,13 @@
                 this.timer = value
                 this.addResources()
                 this.initiateRandomEvent()
+
+                if (value === 2) {
+                    this.alienWarning()
+                }
+                if (value === 0) {
+                    this.alienAttack()
+                }
 
                 // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
             },
@@ -319,6 +348,19 @@
             },
             initiateRandomEvent() {
                 let int = this.rollDice()
+            },
+            alienWarning() {
+                console.log("WARNING! Aliens are about to attack. It looks like X aliens are coming.")
+                // TODO: Perform calculation to determine the results of an alien attack.
+                console.log("Currently, your town may not survive.")
+            },
+            alienAttack() {
+                console.log("the aliens have arrived")
+                // TODO: Show an alien popup.
+                // TODO: Some kind of animation to show a battle is taking place?
+                // TODO: Calculate damage based on alien strength vs. score.
+                // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
+                //  array, and randomly destroy the number by using clearRect() on their coordinates.
             },
             rollDice() {
                 return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
