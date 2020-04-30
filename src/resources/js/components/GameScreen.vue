@@ -24,7 +24,7 @@
                     <timer @time="addToProgress"></timer>
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-center items-center">
-                    <p class="font-display">Score: **</p>
+                    <p class="font-display">Score: {{ gameProgress.score }}</p>
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
                     <p class="font-display">Username</p>
@@ -33,8 +33,11 @@
             </div>
 
             <div>
-                <p>Magic: {{gameProgress.resources.magic}}</p>
-                <p>Rocks: {{ gameProgress.resources.rocks }}</p>
+                <ul id="v-for-object">
+                    <li v-for="(key, value) in gameProgress.resources">
+                        {{ key }} : {{ value }}
+                    </li>
+                </ul>
             </div>
 
             <div class="w-full">
@@ -50,7 +53,8 @@
                              :options="options"
                              :searchable="false"
                              :allow-empty="false">
-                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.title }}</strong> produces <strong>  {{ option.desc }}</strong></template>
+                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.title }}</strong> produces
+                        <strong> {{ option.desc }}</strong></template>
                 </multiselect>
             </div>
 
@@ -77,9 +81,14 @@
             return {
                 value: null,
                 options: [
-                    { title: 'Quarry', desc: 'rocks', price: {rocks: 5}, img: './images/testalien.jpg', alt: 'test'},
-                    { title: 'Library', desc: 'magic', price: {rocks: 10}, img: './images/testalien.jpg', alt: 'test' },
-                    { title: 'Defender', desc: 'a better defence score', price: {magic: 20}, img: './images/testalien.jpg', alt: 'test' },
+                    {title: 'Quarry', desc: 'rocks', img: './images/testalien.jpg', alt: 'test'},
+                    {title: 'Library', desc: 'magic', img: './images/testalien.jpg', alt: 'test'},
+                    {
+                        title: 'Defender',
+                        desc: 'a better defence score',
+                        img: './images/testalien.jpg',
+                        alt: 'test'
+                    },
                 ],
                 vueCanvas: null,
                 construction: {
@@ -87,14 +96,28 @@
                     Library: [],
                     Defender: []
                 },
+                priceList: {
+                    Quarry: {
+                        rocks: 5,
+                        magic: 0
+                    },
+                    Library: {
+                        rocks: 10,
+                        magic: 0
+                    },
+                    Defender: {
+                        rocks: 0,
+                        magic: 20
+                    }
+                },
                 coordinateList: {
                     controlledY: 10,
                     x: [],
                     y: [],
-        },
+                },
                 userImage: './images/testalien.jpg',
-                score: null,
                 gameProgress: {
+                    score: 0,
                     resources: {
                         rocks: 0,
                         magic: 0,
@@ -111,17 +134,46 @@
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
         },
-        watch: {
-
-        },
+        watch: {},
         methods: {
             startGame() {
                 // Start the timer
             },
-            pay() {
-              // pay for the building with resources
-                let rocks = this.gameProgress.resources.rocks
+            checkPrice(type) {
+                console.log("hits the check price function")
+                // pay for the building with resources
+                let rocksTotal = this.gameProgress.resources.rocks
+                let magicTotal = this.gameProgress.resources.magic
+                let price = null
 
+                switch (type) {
+                    case "Quarry":
+                        price = this.priceList.Quarry
+                        let totalCost = this.calculatePrice(price)
+                        if (totalCost[0] > rocksTotal) {
+                            alert("You don't have enough rocks")
+                            return false;
+                        } else {
+                            // PAY FOR IT.
+                        }
+                        break;
+                    case "Library":
+                        break;
+                }
+            },
+            calculatePrice(price) {
+                let rockPrice = 0;
+                let magicPrice = 0;
+                for (let [key, value] of Object.entries(price)) {
+                    console.log(`${key}: ${value}`);
+                    if (key == "rocks") {
+                        rockPrice = value
+                    }
+                    if (key == "magic") {
+                        magicPrice = value
+                    }
+                }
+                return [rockPrice, magicPrice]
             },
             build() {
                 let cw = document.getElementById("gameCanvas").width
@@ -135,8 +187,11 @@
                 let type = this.value.title
 
                 // We need to work out the cost/payment issue here, and adjust totals accordingly.
+                if (this.checkPrice(type) === false) {
+                    return;
+                }
 
-                switch(type) {
+                switch (type) {
                     case "Quarry":
                         width = 10
                         height = 20
@@ -188,7 +243,7 @@
                         x = 10;
                         this.coordinateList.x = [];
                     }
-                    if ((y + height >= ch )) {
+                    if ((y + height >= ch)) {
                         this.coordinateList.y = [];
                         this.fireAlert();
                         return;
@@ -229,7 +284,7 @@
                 }
             },
             fireAlert() {
-              alert("you have no more room in your town")
+                alert("you have no more room in your town")
             },
             goHome() {
                 // Save game with axios.
@@ -244,21 +299,29 @@
             addToProgress(value) {
                 this.timer = value
                 this.addResources()
+                this.initiateRandomEvent()
 
                 // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
             },
             addResources() {
                 // TODO: Refactor this to be extendable.
-              for (let i = 0; i <= this.gameProgress.buildings.libraries; i++) {
-                  this.gameProgress.resources.magic += 1;
-              }
-              for (let i = 0; i <= this.gameProgress.buildings.quarry; i++) {
-                  this.gameProgress.resources.rocks += 1;
-              }
-              // Add in defenders - the more defenders you have, the higher your score.
+                // TODO: Right now generation is (1+n)/min, should it be?
+                for (let i = 0; i <= this.gameProgress.buildings.libraries; i++) {
+                    this.gameProgress.resources.magic += 1;
+                }
+                for (let i = 0; i <= this.gameProgress.buildings.quarry; i++) {
+                    this.gameProgress.resources.rocks += 1;
+                }
+                // Add in defenders - the more defenders you have, the higher your score.
                 // The alien attack should be on a sliding scale - if the aliens have a MUCH higher score,
                 // it should destroy more buildings and defenders etc.
                 // If the aliens only JUST win, it should be minimal destruction.
+            },
+            initiateRandomEvent() {
+                let int = this.rollDice()
+            },
+            rollDice() {
+                return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
             },
             saveProgress() {
                 axios.post('/game-progress', this.gameProgress).then(response => {

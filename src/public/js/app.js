@@ -1914,14 +1914,26 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
 //
 //
 //
@@ -2003,25 +2015,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       options: [{
         title: 'Quarry',
         desc: 'rocks',
-        price: {
-          rocks: 5
-        },
         img: './images/testalien.jpg',
         alt: 'test'
       }, {
         title: 'Library',
         desc: 'magic',
-        price: {
-          rocks: 10
-        },
         img: './images/testalien.jpg',
         alt: 'test'
       }, {
         title: 'Defender',
         desc: 'a better defence score',
-        price: {
-          magic: 20
-        },
         img: './images/testalien.jpg',
         alt: 'test'
       }],
@@ -2031,14 +2034,28 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         Library: [],
         Defender: []
       },
+      priceList: {
+        Quarry: {
+          rocks: 5,
+          magic: 0
+        },
+        Library: {
+          rocks: 10,
+          magic: 0
+        },
+        Defender: {
+          rocks: 0,
+          magic: 20
+        }
+      },
       coordinateList: {
         controlledY: 10,
         x: [],
         y: []
       },
       userImage: './images/testalien.jpg',
-      score: null,
       gameProgress: {
+        score: 0,
         resources: {
           rocks: 0,
           magic: 0,
@@ -2059,9 +2076,51 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   methods: {
     startGame: function startGame() {// Start the timer
     },
-    pay: function pay() {
-      // pay for the building with resources
-      var rocks = this.gameProgress.resources.rocks;
+    checkPrice: function checkPrice(type) {
+      console.log("hits the check price function"); // pay for the building with resources
+
+      var rocksTotal = this.gameProgress.resources.rocks;
+      var magicTotal = this.gameProgress.resources.magic;
+      var price = null;
+
+      switch (type) {
+        case "Quarry":
+          price = this.priceList.Quarry;
+          var totalCost = this.calculatePrice(price);
+
+          if (totalCost[0] > rocksTotal) {
+            alert("You don't have enough rocks");
+            return false;
+          } else {// PAY FOR IT.
+          }
+
+          break;
+
+        case "Library":
+          break;
+      }
+    },
+    calculatePrice: function calculatePrice(price) {
+      var rockPrice = 0;
+      var magicPrice = 0;
+
+      for (var _i = 0, _Object$entries = Object.entries(price); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        console.log("".concat(key, ": ").concat(value));
+
+        if (key == "rocks") {
+          rockPrice = value;
+        }
+
+        if (key == "magic") {
+          magicPrice = value;
+        }
+      }
+
+      return [rockPrice, magicPrice];
     },
     build: function build() {
       var cw = document.getElementById("gameCanvas").width;
@@ -2071,6 +2130,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var colour = null;
       var store = null;
       var type = this.value.title; // We need to work out the cost/payment issue here, and adjust totals accordingly.
+
+      if (this.checkPrice(type) === false) {
+        return;
+      }
 
       switch (type) {
         case "Quarry":
@@ -2182,21 +2245,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     addToProgress: function addToProgress(value) {
       this.timer = value;
-      this.addResources(); // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+      this.addResources();
+      this.initiateRandomEvent(); // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
     },
     addResources: function addResources() {
       // TODO: Refactor this to be extendable.
+      // TODO: Right now generation is (1+n)/min, should it be?
       for (var i = 0; i <= this.gameProgress.buildings.libraries; i++) {
         this.gameProgress.resources.magic += 1;
       }
 
-      for (var _i = 0; _i <= this.gameProgress.buildings.quarry; _i++) {
+      for (var _i2 = 0; _i2 <= this.gameProgress.buildings.quarry; _i2++) {
         this.gameProgress.resources.rocks += 1;
       } // Add in defenders - the more defenders you have, the higher your score.
       // The alien attack should be on a sliding scale - if the aliens have a MUCH higher score,
       // it should destroy more buildings and defenders etc.
       // If the aliens only JUST win, it should be minimal destruction.
 
+    },
+    initiateRandomEvent: function initiateRandomEvent() {
+      var _int = this.rollDice();
+    },
+    rollDice: function rollDice() {
+      return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
     },
     saveProgress: function saveProgress() {
       axios.post('/game-progress', this.gameProgress).then(function (response) {
@@ -38170,7 +38241,18 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-1/3 container mx-auto flex flex-row justify-center items-center"
+              },
+              [
+                _c("p", { staticClass: "font-display" }, [
+                  _vm._v("Score: " + _vm._s(_vm.gameProgress.score))
+                ])
+              ]
+            ),
             _vm._v(" "),
             _c(
               "div",
@@ -38191,16 +38273,25 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", [
-          _c("p", [
-            _vm._v("Magic: " + _vm._s(_vm.gameProgress.resources.magic))
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v("Rocks: " + _vm._s(_vm.gameProgress.resources.rocks))
-          ])
+          _c(
+            "ul",
+            { attrs: { id: "v-for-object" } },
+            _vm._l(_vm.gameProgress.resources, function(key, value) {
+              return _c("li", [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(key) +
+                    " : " +
+                    _vm._s(value) +
+                    "\n                "
+                )
+              ])
+            }),
+            0
+          )
         ]),
         _vm._v(" "),
-        _vm._m(1),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "div",
@@ -38223,8 +38314,8 @@ var render = function() {
                     var option = ref.option
                     return [
                       _c("strong", [_vm._v(_vm._s(option.title))]),
-                      _vm._v(" produces "),
-                      _c("strong", [_vm._v("  " + _vm._s(option.desc))])
+                      _vm._v(" produces\n                    "),
+                      _c("strong", [_vm._v(" " + _vm._s(option.desc))])
                     ]
                   }
                 }
@@ -38258,19 +38349,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "w-1/3 container mx-auto flex flex-row justify-center items-center"
-      },
-      [_c("p", { staticClass: "font-display" }, [_vm._v("Score: **")])]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
