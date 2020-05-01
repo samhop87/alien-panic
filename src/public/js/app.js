@@ -2067,8 +2067,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           quarry: 0,
           libraries: 0
         },
-        timer: null,
-        timerProp: 200
+        timer: 5
       }
     };
   },
@@ -2134,8 +2133,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
             key = _Object$entries$_i[0],
             value = _Object$entries$_i[1];
-
-        console.log("".concat(key, ": ").concat(value));
 
         if (key == "rocks") {
           rockPrice = value;
@@ -2274,7 +2271,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.$emit('clicked', 'test');
     },
     addToProgress: function addToProgress(value) {
+      // this is the number that the timer component reduces...
       this.timer = value;
+      console.log("this should hit every minute", this.timer, value);
       this.addResources();
       this.initiateRandomEvent();
 
@@ -2323,7 +2322,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
       //  array, and randomly destroy the number by using clearRect() on their coordinates.
     },
-    resetTimer: function resetTimer() {// TODO: Trigger event to reset 'timercount' in the child component.
+    resetTimer: function resetTimer() {
+      // TODO: Trigger event to reset 'timercount' in the child component.
+      // the timer in this component is reset, but is not communicated to the timer child component.
+      this.timer = 5;
     },
     rollDice: function rollDice() {
       return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
@@ -2427,14 +2429,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    timerProp: Number
+    countdown: Number
   },
   data: function data() {
     return {
-      timerCount: 5
+      timerCount: this.countdown
     };
   },
   watch: {
@@ -38300,7 +38301,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("timer", {
-                  attrs: { timerProp: _vm.gameProgress.timerProp },
+                  attrs: { countdown: _vm.gameProgress.timer },
                   on: { time: _vm.addToProgress }
                 })
               ],
@@ -38498,9 +38499,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("p", { staticClass: "font-display" }, [_vm._v(_vm._s(_vm.timerCount))]),
-    _vm._v(" "),
-    _c("p", [_vm._v(_vm._s(_vm.timerProp))])
+    _c("p", { staticClass: "font-display" }, [_vm._v(_vm._s(_vm.timerCount))])
   ])
 }
 var staticRenderFns = []

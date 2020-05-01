@@ -1,7 +1,6 @@
 <template>
     <div>
         <p class="font-display">{{ timerCount }}</p>
-        <p>{{ timerProp }}</p>
     </div>
 </template>
 
@@ -9,11 +8,11 @@
 
     export default {
         props: {
-            timerProp: Number
+            countdown: Number
         },
         data() {
             return {
-                timerCount: 5
+                timerCount: this.countdown
             }
         },
 
@@ -28,7 +27,6 @@
                             this.$emit('time', this.timerCount)
                         }, 60000);
                     }
-
                 },
                 immediate: true // This ensures the watcher is triggered upon creation
             }

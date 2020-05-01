@@ -22,7 +22,7 @@
                 <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
                     <p class="font-display">Alien attack in: </p>
 
-                    <timer @time="addToProgress" :timerProp="gameProgress.timerProp"></timer>
+                    <timer @time="addToProgress" :countdown="gameProgress.timer"></timer>
 
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-center items-center">
@@ -129,8 +129,7 @@
                         quarry: 0,
                         libraries: 0
                     },
-                    timer: null,
-                    timerProp: 200,
+                    timer: 5
                 }
             }
         },
@@ -186,7 +185,6 @@
                 let rockPrice = 0;
                 let magicPrice = 0;
                 for (let [key, value] of Object.entries(price)) {
-                    console.log(`${key}: ${value}`);
                     if (key == "rocks") {
                         rockPrice = value
                     }
@@ -322,7 +320,9 @@
                 this.$emit('clicked', 'test')
             },
             addToProgress(value) {
+                // this is the number that the timer component reduces...
                 this.timer = value
+                console.log("this should hit every minute", this.timer, value)
                 this.addResources()
                 this.initiateRandomEvent()
 
@@ -374,6 +374,8 @@
             },
             resetTimer() {
               // TODO: Trigger event to reset 'timercount' in the child component.
+                // the timer in this component is reset, but is not communicated to the timer child component.
+                this.timer = 5
             },
             rollDice() {
                 return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
