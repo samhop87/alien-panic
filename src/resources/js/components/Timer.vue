@@ -1,13 +1,16 @@
 <template>
     <div>
         <p class="font-display">{{ timerCount }}</p>
+        <p>{{ timerProp }}</p>
     </div>
 </template>
 
 <script>
 
     export default {
-
+        props: {
+            timerProp: Number
+        },
         data() {
             return {
                 timerCount: 5

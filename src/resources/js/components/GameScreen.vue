@@ -21,7 +21,9 @@
             <div class="container mx-auto w-full flex flex-row py-2">
                 <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
                     <p class="font-display">Alien attack in: </p>
-                    <timer @time="addToProgress"></timer>
+
+                    <timer @time="addToProgress" :timerProp="gameProgress.timerProp"></timer>
+
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-center items-center">
                     <p class="font-display">Score: {{ gameProgress.score }}</p>
@@ -128,6 +130,7 @@
                         libraries: 0
                     },
                     timer: null,
+                    timerProp: 200,
                 }
             }
         },
@@ -328,6 +331,7 @@
                 }
                 if (value === 0) {
                     this.alienAttack()
+                    this.resetTimer()
                 }
 
                 // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
@@ -349,6 +353,12 @@
             initiateRandomEvent() {
                 let int = this.rollDice()
             },
+            openingEvent() {
+              // get this right, and you're rewarded with 5 rocks.
+              // change the data for a v-if to true, displaying options
+              // change new options array to match.
+              // if the option chosen is right, reward. If wrong, display message.
+            },
             alienWarning() {
                 console.log("WARNING! Aliens are about to attack. It looks like X aliens are coming.")
                 // TODO: Perform calculation to determine the results of an alien attack.
@@ -361,6 +371,9 @@
                 // TODO: Calculate damage based on alien strength vs. score.
                 // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
                 //  array, and randomly destroy the number by using clearRect() on their coordinates.
+            },
+            resetTimer() {
+              // TODO: Trigger event to reset 'timercount' in the child component.
             },
             rollDice() {
                 return Math.floor(Math.random() * (6 - 1 + 1)) + 1;

@@ -2003,6 +2003,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2065,7 +2067,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           quarry: 0,
           libraries: 0
         },
-        timer: null
+        timer: null,
+        timerProp: 200
       }
     };
   },
@@ -2281,6 +2284,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (value === 0) {
         this.alienAttack();
+        this.resetTimer();
       } // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
 
     },
@@ -2302,6 +2306,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     initiateRandomEvent: function initiateRandomEvent() {
       var _int = this.rollDice();
     },
+    openingEvent: function openingEvent() {// get this right, and you're rewarded with 5 rocks.
+      // change the data for a v-if to true, displaying options
+      // change new options array to match.
+      // if the option chosen is right, reward. If wrong, display message.
+    },
     alienWarning: function alienWarning() {
       console.log("WARNING! Aliens are about to attack. It looks like X aliens are coming."); // TODO: Perform calculation to determine the results of an alien attack.
 
@@ -2313,6 +2322,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       // TODO: Calculate damage based on alien strength vs. score.
       // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
       //  array, and randomly destroy the number by using clearRect() on their coordinates.
+    },
+    resetTimer: function resetTimer() {// TODO: Trigger event to reset 'timercount' in the child component.
     },
     rollDice: function rollDice() {
       return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
@@ -2416,7 +2427,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    timerProp: Number
+  },
   data: function data() {
     return {
       timerCount: 5
@@ -38284,7 +38299,10 @@ var render = function() {
                   _vm._v("Alien attack in: ")
                 ]),
                 _vm._v(" "),
-                _c("timer", { on: { time: _vm.addToProgress } })
+                _c("timer", {
+                  attrs: { timerProp: _vm.gameProgress.timerProp },
+                  on: { time: _vm.addToProgress }
+                })
               ],
               1
             ),
@@ -38480,7 +38498,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("p", { staticClass: "font-display" }, [_vm._v(_vm._s(_vm.timerCount))])
+    _c("p", { staticClass: "font-display" }, [_vm._v(_vm._s(_vm.timerCount))]),
+    _vm._v(" "),
+    _c("p", [_vm._v(_vm._s(_vm.timerProp))])
   ])
 }
 var staticRenderFns = []
