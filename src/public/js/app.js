@@ -2005,6 +2005,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2067,7 +2071,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           quarry: 0,
           libraries: 0
         },
-        timer: 5
+        timer: null,
+        resetClock: false
       }
     };
   },
@@ -2272,10 +2277,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     addToProgress: function addToProgress(value) {
       // this is the number that the timer component reduces...
+      // TODO: The timer value is not 5, so is not resetting the resetClock property
       this.timer = value;
       console.log("this should hit every minute", this.timer, value);
       this.addResources();
       this.initiateRandomEvent();
+
+      if (value === 4) {
+        this.gameProgress.resetClock = false;
+      }
 
       if (value === 2) {
         this.alienWarning();
@@ -2322,10 +2332,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
       //  array, and randomly destroy the number by using clearRect() on their coordinates.
     },
-    resetTimer: function resetTimer() {
-      // TODO: Trigger event to reset 'timercount' in the child component.
-      // the timer in this component is reset, but is not communicated to the timer child component.
-      this.timer = 5;
+    resetTimer: function resetTimer(value) {
+      if (value === 5) {
+        this.gameProgress.resetClock = false;
+      }
+
+      this.gameProgress.resetClock = true;
     },
     rollDice: function rollDice() {
       return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
@@ -2431,17 +2443,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    countdown: Number
+    reset: Boolean
   },
   data: function data() {
     return {
-      timerCount: this.countdown
+      timerCount: 5
     };
   },
   watch: {
     timerCount: {
       handler: function handler(value) {
         var _this = this;
+
+        if (this.reset) {
+          this.timerCount = 5;
+          this.$emit('reset');
+        }
 
         if (value > 0) {
           setTimeout(function () {
@@ -2453,7 +2470,19 @@ __webpack_require__.r(__webpack_exports__);
       },
       immediate: true // This ensures the watcher is triggered upon creation
 
-    }
+    } // resetClock: {
+    //     handler(value) {
+    //         console.log("the reset clock handler is hit")
+    //         console.log("this is the value for the reset clock handler", value)
+    //         if (value === true) {
+    //             console.log("gets inside the if inside the reset clock handler")
+    //             this.timerCount = 5
+    //             this.$emit('reset', this.timerCount)
+    //         }
+    //     },
+    //     immediate: true // This ensures the watcher is triggered upon creation
+    // }
+
   }
 });
 
@@ -38301,8 +38330,8 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("timer", {
-                  attrs: { countdown: _vm.gameProgress.timer },
-                  on: { time: _vm.addToProgress }
+                  attrs: { reset: _vm.gameProgress.resetClock },
+                  on: { time: _vm.addToProgress, reset: _vm.resetTimer }
                 })
               ],
               1

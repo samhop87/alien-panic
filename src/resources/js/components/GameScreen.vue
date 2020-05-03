@@ -22,7 +22,11 @@
                 <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
                     <p class="font-display">Alien attack in: </p>
 
-                    <timer @time="addToProgress" :countdown="gameProgress.timer"></timer>
+                    <timer
+                        @time="addToProgress"
+                        :reset="gameProgress.resetClock"
+                        @reset="resetTimer"
+                    ></timer>
 
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-center items-center">
@@ -129,7 +133,8 @@
                         quarry: 0,
                         libraries: 0
                     },
-                    timer: 5
+                    timer: null,
+                    resetClock: false
                 }
             }
         },
@@ -321,10 +326,15 @@
             },
             addToProgress(value) {
                 // this is the number that the timer component reduces...
+                // TODO: The timer value is not 5, so is not resetting the resetClock property
                 this.timer = value
                 console.log("this should hit every minute", this.timer, value)
                 this.addResources()
                 this.initiateRandomEvent()
+
+                if (value === 4) {
+                    this.gameProgress.resetClock = false
+                }
 
                 if (value === 2) {
                     this.alienWarning()
@@ -372,10 +382,11 @@
                 // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
                 //  array, and randomly destroy the number by using clearRect() on their coordinates.
             },
-            resetTimer() {
-              // TODO: Trigger event to reset 'timercount' in the child component.
-                // the timer in this component is reset, but is not communicated to the timer child component.
-                this.timer = 5
+            resetTimer(value) {
+                if (value === 5) {
+                    this.gameProgress.resetClock = false
+                }
+                this.gameProgress.resetClock = true
             },
             rollDice() {
                 return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
