@@ -1,5 +1,5 @@
         <template>
-            <div class="flex flex-col justify-around align-center container mx-auto w-2/3 h-screen">
+            <div class="flex flex-col justify-center align-center container mx-auto w-2/3 h-screen">
                 <h4 class="font-bold font-display text-1xl text-center">Login</h4>
 
                 <form class="flex flex-row flex-wrap container mx-auto w-full"

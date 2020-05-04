@@ -17,26 +17,27 @@ class EntryController extends Controller
         return view('index', compact(['users', 'time']));
     }
 
-    public function saveGame() {
-        dd("hit");
-    }
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function submit(Request $request) {
         $this->validate($request, [
-            'name' => 'required|string',
+            'username' => 'required|string',
             'email' => 'required|email',
         ]);
 
         $users = User::all();
 
         foreach ($users as $user) {
-            if ($user->email == $request->email) {
+            if ($user->email === $request->email) {
                 return response()->json('no repeat email', 200);
             }
         }
 
         User::create([
-           'name' => $request->name,
+           'username' => $request ? $request->username : "none set",
             'email' => $request->email,
             'password' => "test"
         ]);

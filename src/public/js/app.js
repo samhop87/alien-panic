@@ -38731,7 +38731,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "flex flex-col justify-around align-center container mx-auto w-2/3 h-screen"
+        "flex flex-col justify-center align-center container mx-auto w-2/3 h-screen"
     },
     [
       _c("h4", { staticClass: "font-bold font-display text-1xl text-center" }, [
@@ -38966,32 +38966,32 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.fields.name,
-                      expression: "fields.name"
+                      value: _vm.fields.username,
+                      expression: "fields.username"
                     }
                   ],
                   staticClass:
                     "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "text",
-                    name: "name",
-                    id: "name",
+                    name: "username",
+                    id: "username",
                     placeholder: "username"
                   },
-                  domProps: { value: _vm.fields.name },
+                  domProps: { value: _vm.fields.username },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.fields, "name", $event.target.value)
+                      _vm.$set(_vm.fields, "username", $event.target.value)
                     }
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors && _vm.errors.name
+                _vm.errors && _vm.errors.username
                   ? _c("div", { staticClass: "text-danger" }, [
-                      _vm._v(_vm._s(_vm.errors.name[0]))
+                      _vm._v(_vm._s(_vm.errors.username[0]))
                     ])
                   : _vm._e()
               ]),

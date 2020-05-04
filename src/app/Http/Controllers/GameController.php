@@ -9,13 +9,16 @@ use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
-
+    // TODO: WE NEED TO SAVE THE USER ID.
+    // TODO: USERS NEED TO BE LOGGED IN AND IDENTIFIABLE.
     public function saveGame(Request $request) {
-        dd("hit", $request->resources['rocks']);
         GameProgress::create([
-            'rocks' => $request->resources->rocks,
-            'magic' => $request->resources->magic,
-            'timeRemaining' => $request->timer,
+            'score' => $request->score,
+            'rocks' => $request->resources['rocks'],
+            'magic' => $request->resources['magic'],
+            'timeRemaining' => $request->timer ? $request->timer : 0,
+            'quarries' => $request->buildings['quarry'],
+            'libraries' => $request->buildings['libraries']
         ]);
     }
 }
