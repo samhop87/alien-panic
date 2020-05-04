@@ -5,13 +5,13 @@
             <welcome
                 v-if="!create && !showGame && !showLogin"
                 @clicked="createUser"
+                @present="presentLogin"
             ></welcome>
 
             <login
                 v-if="showLogin"
-                @logging="login"
-            >
-            </login>
+                @clicked="goBack"
+            ></login>
 
             <user-store
                 v-if="create"
@@ -65,8 +65,7 @@
                 this.showGame = true;
                 this.create = false;
             },
-            login(value) {
-                console.log("hit")
+            presentLogin(value) {
                 this.showLogin = true;
             }
         }

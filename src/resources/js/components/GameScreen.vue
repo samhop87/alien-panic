@@ -50,7 +50,8 @@
                 <div v-show="displayModal" class="h-32 flex justify-center my-4">
                     <display-modal></display-modal>
                 </div>
-                <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200" id="gameCanvas"></canvas>
+                <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200"
+                        id="gameCanvas"></canvas>
             </div>
 
             <div class="border-4 border-solid border-red-300">
@@ -149,6 +150,9 @@
         methods: {
             startGame() {
                 // Start the timer
+
+                // TODO: THIS IS A TEST FUNCTION.
+                // TODO: MOVE IT SO THAT IT DISPLAYS AS PART OF THE PROGRESS FUNCTION.
                 if (this.displayModal) {
                     this.displayModal = false
                 } else {
@@ -354,7 +358,7 @@
                 // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
             },
             preventGameClock() {
-              this.gameProgress.resetClock = false
+                this.gameProgress.resetClock = false
             },
             addResources() {
                 // TODO: Refactor this to be extendable.
@@ -374,10 +378,10 @@
                 let int = this.rollDice()
             },
             openingEvent() {
-              // get this right, and you're rewarded with 5 rocks.
-              // change the data for a v-if to true, displaying options
-              // change new options array to match.
-              // if the option chosen is right, reward. If wrong, display message.
+                // get this right, and you're rewarded with 5 rocks.
+                // change the data for a v-if to true, displaying options
+                // change new options array to match.
+                // if the option chosen is right, reward. If wrong, display message.
             },
             alienWarning() {
                 console.log("WARNING! Aliens are about to attack. It looks like X aliens are coming.")

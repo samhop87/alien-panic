@@ -10,16 +10,31 @@
                             <input type="text" class="w-full p-2 rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center" name="name" id="name" placeholder="username" v-model="fields.name"/>
-                            <div v-if="errors && errors.name" class="text-danger">{{ errors.name[0] }}</div>
+                      content-center"
+                                   name="username"
+                                   id="username"
+                                   placeholder="username"
+                                   v-model="fields.username"
+                            />
+                            <div v-if="errors && errors.username"
+                                 class="text-danger">
+                                {{ errors.username[0] }}
+                            </div>
                         </div>
 
                         <div class="w-5/6 p-2 container mx-auto">
-                            <input type="email" class="p-2 w-full rounded-lg
+                            <input type="password" class="p-2 w-full rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center" name="email" id="email" placeholder="valid email address" v-model="fields.email"/>
-                            <div v-if="errors && errors.email" class="text-danger">{{ errors.email[0] }}</div>
+                      content-center"
+                                   name="password"
+                                   id="password"
+                                   placeholder="password"
+                                   v-model="fields.password"/>
+                            <div
+                                v-if="errors && errors.password"
+                                class="text-danger">{{ errors.password[0] }}
+                            </div>
                         </div>
                     </div>
 

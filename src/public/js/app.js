@@ -2031,6 +2031,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2106,6 +2107,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   methods: {
     startGame: function startGame() {
       // Start the timer
+      // TODO: THIS IS A TEST FUNCTION.
+      // TODO: MOVE IT SO THAT IT DISPLAYS AS PART OF THE PROGRESS FUNCTION.
       if (this.displayModal) {
         this.displayModal = false;
       } else {
@@ -2455,8 +2458,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showGame = true;
       this.create = false;
     },
-    login: function login(value) {
-      console.log("hit");
+    presentLogin: function presentLogin(value) {
       this.showLogin = true;
     }
   }
@@ -2473,6 +2475,21 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2742,13 +2759,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     createUser: function createUser(event) {
       this.$emit('clicked', 'test');
     },
-    login: function login(event) {
-      this.$emit('logging', 'login');
+    fireLog: function fireLog(event) {
+      this.$emit('present');
     }
   }
 });
@@ -38658,11 +38680,13 @@ var render = function() {
         { attrs: { mode: "out-in", name: "fade" } },
         [
           !_vm.create && !_vm.showGame && !_vm.showLogin
-            ? _c("welcome", { on: { clicked: _vm.createUser } })
+            ? _c("welcome", {
+                on: { clicked: _vm.createUser, present: _vm.presentLogin }
+              })
             : _vm._e(),
           _vm._v(" "),
           _vm.showLogin
-            ? _c("login", { on: { logging: _vm.login } })
+            ? _c("login", { on: { clicked: _vm.goBack } })
             : _vm._e(),
           _vm._v(" "),
           _vm.create
@@ -38739,32 +38763,36 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.fields.name,
-                      expression: "fields.name"
+                      value: _vm.fields.username,
+                      expression: "fields.username"
                     }
                   ],
                   staticClass:
                     "w-full p-2 rounded-lg\n        border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
                   attrs: {
                     type: "text",
-                    name: "name",
-                    id: "name",
+                    name: "username",
+                    id: "username",
                     placeholder: "username"
                   },
-                  domProps: { value: _vm.fields.name },
+                  domProps: { value: _vm.fields.username },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.fields, "name", $event.target.value)
+                      _vm.$set(_vm.fields, "username", $event.target.value)
                     }
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors && _vm.errors.name
+                _vm.errors && _vm.errors.username
                   ? _c("div", { staticClass: "text-danger" }, [
-                      _vm._v(_vm._s(_vm.errors.name[0]))
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.errors.username[0]) +
+                          "\n                "
+                      )
                     ])
                   : _vm._e()
               ]),
@@ -38775,32 +38803,34 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.fields.email,
-                      expression: "fields.email"
+                      value: _vm.fields.password,
+                      expression: "fields.password"
                     }
                   ],
                   staticClass:
                     "p-2 w-full rounded-lg\n        border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
                   attrs: {
-                    type: "email",
-                    name: "email",
-                    id: "email",
-                    placeholder: "valid email address"
+                    type: "password",
+                    name: "password",
+                    id: "password",
+                    placeholder: "password"
                   },
-                  domProps: { value: _vm.fields.email },
+                  domProps: { value: _vm.fields.password },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.fields, "email", $event.target.value)
+                      _vm.$set(_vm.fields, "password", $event.target.value)
                     }
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors && _vm.errors.email
+                _vm.errors && _vm.errors.password
                   ? _c("div", { staticClass: "text-danger" }, [
-                      _vm._v(_vm._s(_vm.errors.email[0]))
+                      _vm._v(
+                        _vm._s(_vm.errors.password[0]) + "\n                "
+                      )
                     ])
                   : _vm._e()
               ])
@@ -39142,7 +39172,7 @@ var render = function() {
             {
               staticClass:
                 "rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n        p-2 w-1/2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
-              on: { click: _vm.login }
+              on: { click: _vm.fireLog }
             },
             [
               _c("a", { staticClass: "font-semibold" }, [
