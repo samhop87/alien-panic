@@ -47,7 +47,10 @@
             </div>
 
             <div class="w-full flex justify-center my-4">
-                <canvas class="border-solid border-gray-300 border-4 bg-green-200" id="gameCanvas"></canvas>
+                <div v-show="displayModal" class="h-32 flex justify-center my-4">
+                    <display-modal></display-modal>
+                </div>
+                <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200" id="gameCanvas"></canvas>
             </div>
 
             <div class="border-4 border-solid border-red-300">
@@ -86,6 +89,7 @@
         data() {
             return {
                 value: null,
+                displayModal: false,
                 options: [
                     {title: 'Quarry', desc: 'rocks', img: './images/testalien.jpg', alt: 'test'},
                     {title: 'Library', desc: 'magic', img: './images/testalien.jpg', alt: 'test'},
@@ -145,6 +149,11 @@
         methods: {
             startGame() {
                 // Start the timer
+                if (this.displayModal) {
+                    this.displayModal = false
+                } else {
+                    this.displayModal = true
+                }
             },
             checkPrice(type) {
                 // pay for the building with resources
@@ -325,15 +334,13 @@
                 this.$emit('clicked', 'test')
             },
             addToProgress(value) {
-                // this is the number that the timer component reduces...
-                // TODO: The timer value is not 5, so is not resetting the resetClock property
                 this.timer = value
-                console.log("this should hit every minute", this.timer, value)
+
                 this.addResources()
                 this.initiateRandomEvent()
 
                 if (value === 4) {
-                    this.gameProgress.resetClock = false
+                    this.preventGameClock()
                 }
 
                 if (value === 2) {
@@ -345,6 +352,9 @@
                 }
 
                 // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+            },
+            preventGameClock() {
+              this.gameProgress.resetClock = false
             },
             addResources() {
                 // TODO: Refactor this to be extendable.
@@ -383,9 +393,6 @@
                 //  array, and randomly destroy the number by using clearRect() on their coordinates.
             },
             resetTimer(value) {
-                if (value === 5) {
-                    this.gameProgress.resetClock = false
-                }
                 this.gameProgress.resetClock = true
             },
             rollDice() {
