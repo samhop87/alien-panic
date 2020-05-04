@@ -3,7 +3,7 @@
                 <h1 class="font-bold font-display text-3xl text-center">Welcome to Alien Panic!</h1>
                 <p class="text-center mb-4">A building and defence game.</p>
                 <div class="flex flex-col justify-around align-center items-center container mx-auto w-4/5 text-center">
-                    <div class="rounded-lg cursor-pointer hover:text-white hover:bg-blue-500
+                    <div v-on:click="login" class="rounded-lg cursor-pointer hover:text-white hover:bg-blue-500
                     p-2 w-1/2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
                       content-center"><a class="font-semibold">Continue Game</a></div>
@@ -20,6 +20,9 @@
         methods: {
             createUser (event) {
                 this.$emit('clicked', 'test')
+            },
+            login (event) {
+                this.$emit('logging', 'login')
             }
         }
     }</script>

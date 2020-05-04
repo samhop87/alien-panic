@@ -3,9 +3,15 @@
         <transition mode="out-in" name="fade">
 
             <welcome
-                v-if="!create && !showGame"
+                v-if="!create && !showGame && !showLogin"
                 @clicked="createUser"
             ></welcome>
+
+            <login
+                v-if="showLogin"
+                @logging="login"
+            >
+            </login>
 
             <user-store
                 v-if="create"
@@ -26,6 +32,7 @@
     import UserStore from "./UserStore"
     import Welcome from "./Welcome"
     import GameScreen from "./GameScreen"
+    import Login from "./Login"
 
     export default {
         mixins: [],
@@ -33,12 +40,14 @@
         components: {
             UserStore,
             Welcome,
-            GameScreen
+            GameScreen,
+            Login
         },
         data() {
             return {
                 create: false,
                 showGame: false,
+                showLogin: false
             }
         },
         methods: {
@@ -53,9 +62,12 @@
                 this.showGame = false;
             },
             startGame(value) {
-                console.log("hits the parent")
                 this.showGame = true;
                 this.create = false;
+            },
+            login(value) {
+                console.log("hit")
+                this.showLogin = true;
             }
         }
     }

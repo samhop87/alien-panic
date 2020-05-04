@@ -20,3 +20,5 @@ Route::post('/submit', 'EntryController@submit');
 
 Route::post('/game-progress', 'GameController@saveGame');
 
+Route::post('/login', 'LoginController@login');
+

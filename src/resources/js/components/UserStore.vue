@@ -78,7 +78,6 @@
                 this.$emit('clicked', 'test')
             },
             startGame() {
-                console.log("hits inside the child component")
                 this.$emit('begin')
             },
             submit() {
