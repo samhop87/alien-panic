@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
 {
@@ -16,9 +17,10 @@ class EntryController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $users = User::all();
+        $retrieveUser = Auth::user();
+        $username = $retrieveUser ? $retrieveUser->username : "test";
         $time  = Carbon::now();
-        return view('index', compact(['users', 'time']));
+        return view('index', compact(['username', 'time']));
     }
 
     /**
@@ -51,5 +53,11 @@ class EntryController extends Controller
         */
 
         return response()->json(null, 200);
+    }
+    public function user() {
+        $retrieveUser = Auth::user();
+        $username = $retrieveUser ? $retrieveUser->username : "test";
+        $time  = Carbon::now();
+        return response()->json('username');
     }
 }

@@ -9,8 +9,10 @@
             ></welcome>
 
             <login
+                :username="username"
                 v-if="showLogin"
                 @clicked="goBack"
+                @signin="startGame"
             ></login>
 
             <user-store
@@ -20,6 +22,7 @@
             ></user-store>
 
             <game-screen
+                :username="username"
                 v-if="showGame"
                 @clicked="goHome"
             ></game-screen>
@@ -36,7 +39,9 @@
 
     export default {
         mixins: [],
-        props: ['time'],
+        props: {
+            username: String
+        },
         components: {
             UserStore,
             Welcome,
@@ -65,6 +70,7 @@
             startGame(value) {
                 this.showGame = true;
                 this.create = false;
+                this.showLogin = false;
             },
             presentLogin(value) {
                 this.showLogin = true;

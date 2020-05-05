@@ -33,7 +33,7 @@
                     <p class="font-display">Score: {{ gameProgress.score }}</p>
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
-                    <p class="font-display">Username</p>
+                    <p class="font-display">Username {{ userNameLara }}</p>
                     <img class="w-1/3" :src="userImage">
                 </div>
             </div>
@@ -86,11 +86,17 @@
 
     export default {
         components: {Multiselect},
-        props: [],
+        props: {
+            username: String
+        },
         data() {
             return {
+                userNameLara: null,
+                userImage: './images/testalien.jpg',
                 value: null,
                 displayModal: false,
+                vueCanvas: null,
+
                 options: [
                     {title: 'Quarry', desc: 'rocks', img: './images/testalien.jpg', alt: 'test'},
                     {title: 'Library', desc: 'magic', img: './images/testalien.jpg', alt: 'test'},
@@ -101,7 +107,6 @@
                         alt: 'test'
                     },
                 ],
-                vueCanvas: null,
                 construction: {
                     Quarry: [],
                     Library: [],
@@ -126,7 +131,6 @@
                     x: [],
                     y: [],
                 },
-                userImage: './images/testalien.jpg',
                 gameProgress: {
                     score: 0,
                     resources: {
@@ -142,6 +146,12 @@
                     resetClock: false
                 }
             }
+        },
+        beforeMount() {
+                axios.post('/user').then(response => {
+                    this.userNameLara = response.data
+                    console.log(this.userNameLara)
+                })
         },
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");

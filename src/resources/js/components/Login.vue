@@ -3,7 +3,7 @@
                 <h4 class="font-bold font-display text-1xl text-center">Login</h4>
 
                 <form class="flex flex-row flex-wrap container mx-auto w-full"
-                      @submit.prevent="submit">
+                      @submit.prevent="process">
 
                     <div class="flex flex-col flex-wrap container mx-auto w-full md:w-1/2">
                         <div class="w-5/6 p-2 container mx-auto">
@@ -67,11 +67,11 @@
                     goBack() {
                         this.$emit('clicked', 'test')
                     },
-                    submit() {
+                    process() {
                         this.errors = {};
                         axios.post('/login', this.fields).then(response => {
                             alert('Login attempt!');
-                            this.startGame();
+                            this.$emit('signin')
                         }).catch(error => {
                             if (error.response.status === 422) {
                                 this.errors = error.response.data.errors || {};

@@ -2037,11 +2037,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   components: {
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
-  props: [],
+  props: {
+    username: String
+  },
   data: function data() {
     return {
+      userNameLara: null,
+      userImage: './images/testalien.jpg',
       value: null,
       displayModal: false,
+      vueCanvas: null,
       options: [{
         title: 'Quarry',
         desc: 'rocks',
@@ -2058,7 +2063,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         img: './images/testalien.jpg',
         alt: 'test'
       }],
-      vueCanvas: null,
       construction: {
         Quarry: [],
         Library: [],
@@ -2083,7 +2087,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         x: [],
         y: []
       },
-      userImage: './images/testalien.jpg',
       gameProgress: {
         score: 0,
         resources: {
@@ -2099,6 +2102,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         resetClock: false
       }
     };
+  },
+  beforeMount: function beforeMount() {
+    var _this = this;
+
+    axios.post('/user').then(function (response) {
+      _this.userNameLara = response.data;
+      console.log(_this.userNameLara);
+    });
   },
   mounted: function mounted() {
     this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
@@ -2423,13 +2434,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [],
-  props: ['time'],
+  props: {
+    username: String
+  },
   components: {
     UserStore: _UserStore__WEBPACK_IMPORTED_MODULE_0__["default"],
     Welcome: _Welcome__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -2458,6 +2474,7 @@ __webpack_require__.r(__webpack_exports__);
     startGame: function startGame(value) {
       this.showGame = true;
       this.create = false;
+      this.showLogin = false;
     },
     presentLogin: function presentLogin(value) {
       this.showLogin = true;
@@ -2544,14 +2561,14 @@ __webpack_require__.r(__webpack_exports__);
     goBack: function goBack() {
       this.$emit('clicked', 'test');
     },
-    submit: function submit() {
+    process: function process() {
       var _this = this;
 
       this.errors = {};
       axios.post('/login', this.fields).then(function (response) {
         alert('Login attempt!');
 
-        _this.startGame();
+        _this.$emit('signin');
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this.errors = error.response.data.errors || {};
@@ -38534,7 +38551,9 @@ var render = function() {
                   "w-1/3 container mx-auto flex flex-row justify-between items-center"
               },
               [
-                _c("p", { staticClass: "font-display" }, [_vm._v("Username")]),
+                _c("p", { staticClass: "font-display" }, [
+                  _vm._v("Username " + _vm._s(_vm.userNameLara))
+                ]),
                 _vm._v(" "),
                 _c("img", {
                   staticClass: "w-1/3",
@@ -38687,7 +38706,10 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _vm.showLogin
-            ? _c("login", { on: { clicked: _vm.goBack } })
+            ? _c("login", {
+                attrs: { username: _vm.username },
+                on: { clicked: _vm.goBack, signin: _vm.startGame }
+              })
             : _vm._e(),
           _vm._v(" "),
           _vm.create
@@ -38697,7 +38719,10 @@ var render = function() {
             : _vm._e(),
           _vm._v(" "),
           _vm.showGame
-            ? _c("game-screen", { on: { clicked: _vm.goHome } })
+            ? _c("game-screen", {
+                attrs: { username: _vm.username },
+                on: { clicked: _vm.goHome }
+              })
             : _vm._e()
         ],
         1
@@ -38746,7 +38771,7 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.submit($event)
+              return _vm.process($event)
             }
           }
         },
