@@ -48,12 +48,18 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
+        if(auth()->attempt(['username' => $input['username'], 'password' => $input['password']]))
         {
-            return response()->json('success', 200);
-        }else{
-            return response()->json('failed', 200);
+            return response()->json([
+                'status'   => 'success',
+                'user' => $input['username'],
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'user'   => 'Unauthorized Access'
+            ]);
+
         }
 
     }

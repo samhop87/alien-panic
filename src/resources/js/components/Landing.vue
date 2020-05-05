@@ -56,6 +56,7 @@
             },
             goBack(value) {
                 this.create = false;
+                this.showLogin = false;
             },
             goHome(value) {
                 this.create = false;

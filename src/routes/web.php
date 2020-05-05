@@ -16,6 +16,8 @@ Route::get('/', [
     'uses' => EntryController::class . '@index'
 ]);
 
+Auth::routes();
+
 Route::post('/submit', 'EntryController@submit');
 
 Route::post('/game-progress', 'GameController@saveGame');

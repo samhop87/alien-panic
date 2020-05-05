@@ -2449,6 +2449,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     goBack: function goBack(value) {
       this.create = false;
+      this.showLogin = false;
     },
     goHome: function goHome(value) {
       this.create = false;
