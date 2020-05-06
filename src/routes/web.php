@@ -25,3 +25,7 @@ Route::post('/user', 'EntryController@user');
 Route::post('/game-progress', 'GameController@saveGame');
 
 Route::post('/login', \Auth\LoginController::class . '@login');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
