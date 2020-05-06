@@ -48,6 +48,8 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        dd(auth()->attempt(['password' => $input['password'], 'username' => $input['username']]));
+
         if(auth()->attempt(['username' => $input['username'], 'password' => $input['password']]))
         {
             return response()->json([

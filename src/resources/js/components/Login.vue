@@ -35,6 +35,10 @@
                                 v-if="errors && errors.password"
                                 class="text-danger">{{ errors.password[0] }}
                             </div>
+                            <div
+                                v-if="errors && errors.status"
+                                class="text-danger">{{ errors.user }}
+                            </div>
                         </div>
                     </div>
 
@@ -70,8 +74,15 @@
                     process() {
                         this.errors = {};
                         axios.post('/login', this.fields).then(response => {
-                            alert('Login attempt!');
-                            this.$emit('signin')
+                            console.log(response.data.status)
+                            if (response.data.status !== "error")
+                            {
+                                alert('Login attempt!');
+                                this.$emit('signin')
+                            } else {
+                                alert("there was an error in the response")
+                                this.errors = response.data
+                            }
                         }).catch(error => {
                             if (error.response.status === 422) {
                                 this.errors = error.response.data.errors || {};
