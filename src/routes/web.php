@@ -11,17 +11,6 @@
 |
 */
 
-Route::get('/', [
-    'as' => 'welcome',
-    'uses' => EntryController::class . '@index'
-]);
-
-Auth::routes();
-
-Route::post('/submit', 'EntryController@submit');
-Route::post('/user', 'EntryController@user');
-
-
-Route::post('/game-progress', 'GameController@saveGame');
-
-Route::post('/login', \Auth\LoginController::class . '@login');
+Route::get('/', function () {
+    return view('welcome');
+});
