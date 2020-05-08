@@ -2550,6 +2550,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2566,9 +2570,16 @@ __webpack_require__.r(__webpack_exports__);
 
       this.errors = {};
       axios.post('/login', this.fields).then(function (response) {
-        alert('Login attempt!');
+        console.log(response.data.status);
 
-        _this.$emit('signin');
+        if (response.data.status !== "error") {
+          alert('Login attempt!');
+
+          _this.$emit('signin');
+        } else {
+          alert("there was an error in the response");
+          _this.errors = response.data;
+        }
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this.errors = error.response.data.errors || {};
@@ -38857,6 +38868,12 @@ var render = function() {
                       _vm._v(
                         _vm._s(_vm.errors.password[0]) + "\n                "
                       )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.errors && _vm.errors.status
+                  ? _c("div", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.errors.user) + "\n                ")
                     ])
                   : _vm._e()
               ])
