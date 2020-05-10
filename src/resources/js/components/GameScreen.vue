@@ -231,7 +231,7 @@
                 let colour = null;
                 let store = null;
 
-                let type = this.value.title
+                let type = this.value.title ? this.value.title : "test"
 
                 // We need to work out the cost/payment issue here, and adjust totals accordingly.
                 if (this.checkPrice(type) === false) {
