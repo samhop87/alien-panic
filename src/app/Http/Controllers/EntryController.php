@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('auth');
-//    }
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

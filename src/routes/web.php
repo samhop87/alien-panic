@@ -11,12 +11,10 @@
 |
 */
 
-Route::get('/', [
-    'as' => 'welcome',
-    'uses' => EntryController::class . '@index'
-]);
-
-Auth::routes();
+//Route::get('/', [
+//    'as' => 'welcome',
+//    'uses' => EntryController::class . '@index'
+//]);
 
 Route::post('/submit', 'EntryController@submit');
 Route::post('/user', 'EntryController@user');
@@ -24,7 +22,7 @@ Route::post('/user', 'EntryController@user');
 
 Route::post('/game-progress', 'GameController@saveGame');
 
-Route::post('/login', \Auth\LoginController::class . '@login');
+//Route::post('/login', \Auth\LoginController::class . '@login');
 
 Auth::routes();
 

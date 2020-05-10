@@ -2200,7 +2200,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var height = null;
       var colour = null;
       var store = null;
-      var type = this.value.title; // We need to work out the cost/payment issue here, and adjust totals accordingly.
+      var type = this.value.title ? this.value.title : "test"; // We need to work out the cost/payment issue here, and adjust totals accordingly.
 
       if (this.checkPrice(type) === false) {
         return;

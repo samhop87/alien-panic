@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -37,32 +36,5 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-    }
-
-    public function login(Request $request)
-    {
-        $input = $request->all();
-
-        $this->validate($request, [
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        dd(auth()->attempt(['password' => $input['password'], 'username' => $input['username']]));
-
-        if(auth()->attempt(['username' => $input['username'], 'password' => $input['password']]))
-        {
-            return response()->json([
-                'status'   => 'success',
-                'user' => $input['username'],
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'user'   => 'Unauthorized Access'
-            ]);
-
-        }
-
     }
 }
