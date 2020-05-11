@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // This takes users to game once logged in.
         return view('index');
     }
 }

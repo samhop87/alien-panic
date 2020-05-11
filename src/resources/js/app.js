@@ -24,6 +24,7 @@ Vue.component('game-screen', require('./components/GameScreen').default);
 Vue.component('timer', require('./components/Timer').default);
 Vue.component('display-modal', require('./components/DisplayModal').default);
 Vue.component('login', require('./components/Login').default);
+Vue.component('new-landing', require('./components/NewLanding').default);
 
 Vue.component('multiselect', Multiselect);
 

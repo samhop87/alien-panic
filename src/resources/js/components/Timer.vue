@@ -35,19 +35,6 @@
                 },
                 immediate: true // This ensures the watcher is triggered upon creation
             },
-            // resetClock: {
-            //     handler(value) {
-            //         console.log("the reset clock handler is hit")
-            //         console.log("this is the value for the reset clock handler", value)
-            //         if (value === true) {
-            //             console.log("gets inside the if inside the reset clock handler")
-            //             this.timerCount = 5
-            //             this.$emit('reset', this.timerCount)
-            //         }
-            //     },
-            //     immediate: true // This ensures the watcher is triggered upon creation
-            // }
-
         }
     }
 
