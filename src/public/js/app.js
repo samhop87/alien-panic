@@ -2655,13 +2655,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    login: String
+  },
   data: function data() {
     return {
       fields: {},
@@ -2669,20 +2666,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    // goBack() {
-    //     this.$emit('clicked', 'test')
-    // },
     process: function process() {
       var _this = this;
 
       this.errors = {};
-      axios.post('/login', this.fields).then(function (response) {
-        console.log(response.data.status);
-
+      axios.post(this.login, this.fields).then(function (response) {
         if (response.data.status !== "error") {
           alert('Login attempt!');
-
-          _this.$emit('signin');
+          window.location.href = '/';
         } else {
           alert("there was an error in the response");
           _this.errors = response.data;
@@ -39072,7 +39063,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "w-full p-2 rounded-lg\n                    border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
+                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "text",
                     name: "email",
@@ -39093,9 +39084,9 @@ var render = function() {
                 _vm.errors && _vm.errors.email
                   ? _c("div", { staticClass: "text-danger" }, [
                       _vm._v(
-                        "\n                        " +
+                        "\n                    " +
                           _vm._s(_vm.errors.email[0]) +
-                          "\n                    "
+                          "\n                "
                       )
                     ])
                   : _vm._e()
@@ -39112,7 +39103,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "p-2 w-full rounded-lg\n                    border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
+                    "p-2 w-full rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "password",
                     name: "password",
@@ -39133,15 +39124,14 @@ var render = function() {
                 _vm.errors && _vm.errors.password
                   ? _c("div", { staticClass: "text-danger" }, [
                       _vm._v(
-                        _vm._s(_vm.errors.password[0]) +
-                          "\n                    "
+                        _vm._s(_vm.errors.password[0]) + "\n                "
                       )
                     ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.errors && _vm.errors.status
                   ? _c("div", { staticClass: "text-danger" }, [
-                      _vm._v(_vm._s(_vm.errors.user) + "\n                    ")
+                      _vm._v(_vm._s(_vm.errors.user) + "\n                ")
                     ])
                   : _vm._e()
               ])
@@ -39170,10 +39160,10 @@ var staticRenderFns = [
           "button",
           {
             staticClass:
-              "\n                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                    p-2 border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
+              "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
             attrs: { type: "submit" }
           },
-          [_vm._v("Login\n                ")]
+          [_vm._v("Login\n            ")]
         )
       ]
     )

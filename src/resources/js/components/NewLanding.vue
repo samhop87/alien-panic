@@ -43,12 +43,6 @@
             </div>
 
             <div class="flex flex-row flex-wrap justify-between container mx-auto w-4/5">
-<!--                <button type="button" v-on:click="goBack" class="-->
-<!--                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500-->
-<!--                    p-2 border-4 border-gray-400 border-solid-->
-<!--                     my-2 flex justify-center align-center-->
-<!--                      content-center">Go back-->
-<!--                </button>-->
                 <button type="submit" class="
                 w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500
                     p-2 border-4 border-gray-400 border-solid
@@ -61,6 +55,9 @@
 </template>
 <script>
     export default {
+        props: {
+            login: String
+        },
         data() {
             return {
                 fields: {},
@@ -68,17 +65,13 @@
             }
         },
         methods: {
-            // goBack() {
-            //     this.$emit('clicked', 'test')
-            // },
             process() {
                 this.errors = {};
-                axios.post('/login', this.fields).then(response => {
-                    console.log(response.data.status)
+                axios.post(this.login, this.fields).then(response => {
                     if (response.data.status !== "error")
                     {
                         alert('Login attempt!');
-                        this.$emit('signin')
+                        window.location.href = '/'
                     } else {
                         alert("there was an error in the response")
                         this.errors = response.data
