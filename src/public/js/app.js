@@ -2037,7 +2037,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   props: {
-    username: String
+    username: String,
+    logout: String
   },
   data: function data() {
     return {
@@ -2373,7 +2374,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     saveProgress: function saveProgress() {
       axios.post('/game-progress', this.gameProgress).then(function (response) {
-        alert('Game saved!'); // TODO: LOGOUT OF THE GAME USING THE ROUTE...
+        alert('Game saved!');
+      });
+      this.logoff();
+    },
+    logoff: function logoff() {
+      // TODO: page needs to change.
+      axios.post(this.logout).then(function (response) {
+        alert('Logging out');
       });
     }
   }
@@ -2438,7 +2446,8 @@ __webpack_require__.r(__webpack_exports__);
     username: String,
     login: String,
     register: String,
-    forgot: String
+    forgot: String,
+    logout: String
   },
   components: {
     UserStore: _UserStore__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -38775,7 +38784,7 @@ var render = function() {
               staticClass:
                 "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
               attrs: { type: "button" },
-              on: { click: _vm.startGame }
+              on: { click: _vm.saveProgress }
             },
             [_vm._v("Test Modal\n            ")]
           )

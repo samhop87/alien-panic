@@ -21,11 +21,9 @@
 </head>
 <body>
 <div id="newApp">
-    @guest
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
-    @endguest
 
     <main>
         @yield('content')

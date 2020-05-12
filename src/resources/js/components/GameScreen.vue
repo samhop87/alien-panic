@@ -68,7 +68,7 @@
                       content-center">Build it!
                 </button>
 
-                <button type="button" v-on:click="startGame" class="
+                <button type="button" v-on:click="saveProgress" class="
                 w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500
                     p-2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
@@ -86,7 +86,8 @@
     export default {
         components: {Multiselect},
         props: {
-            username: String
+            username: String,
+            logout: String
         },
         data() {
             return {
@@ -407,9 +408,15 @@
             saveProgress() {
                 axios.post('/game-progress', this.gameProgress).then(response => {
                     alert('Game saved!');
-                    // TODO: LOGOUT OF THE GAME USING THE ROUTE...
                 });
+                this.logoff()
             },
+            logoff() {
+                // TODO: page needs to change.
+                axios.post(this.logout).then(response => {
+                    alert('Logging out');
+                });
+            }
         }
     }
 </script>

@@ -46,6 +46,7 @@
             login: String,
             register: String,
             forgot: String,
+            logout: String
         },
         components: {
             UserStore,
