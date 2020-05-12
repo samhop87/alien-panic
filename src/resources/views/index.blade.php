@@ -2,6 +2,6 @@
 
 @section('content')
     <div id="app">
-        <landing></landing>
+        <game-screen username="{{ Auth::user()->name }}"></game-screen>
     </div>
     @endsection

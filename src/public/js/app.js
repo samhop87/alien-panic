@@ -2031,7 +2031,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2042,7 +2041,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   data: function data() {
     return {
-      userNameLara: null,
       userImage: './images/testalien.jpg',
       value: null,
       displayModal: false,
@@ -2102,14 +2100,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         resetClock: false
       }
     };
-  },
-  beforeMount: function beforeMount() {
-    var _this = this;
-
-    axios.post('/user').then(function (response) {
-      _this.userNameLara = response.data;
-      console.log(_this.userNameLara);
-    });
   },
   mounted: function mounted() {
     this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
@@ -2383,7 +2373,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     saveProgress: function saveProgress() {
       axios.post('/game-progress', this.gameProgress).then(function (response) {
-        alert('Game saved!');
+        alert('Game saved!'); // TODO: LOGOUT OF THE GAME USING THE ROUTE...
       });
     }
   }
@@ -2402,8 +2392,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UserStore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserStore */ "./resources/js/components/UserStore.vue");
 /* harmony import */ var _Welcome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Welcome */ "./resources/js/components/Welcome.vue");
-/* harmony import */ var _GameScreen__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GameScreen */ "./resources/js/components/GameScreen.vue");
-/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Login */ "./resources/js/components/Login.vue");
+/* harmony import */ var _Login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Login */ "./resources/js/components/Login.vue");
+//
+//
 //
 //
 //
@@ -2438,19 +2429,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
-
+ // import GameScreen from "./GameScreen"
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [],
   props: {
-    username: String
+    username: String,
+    login: String,
+    register: String,
+    forgot: String
   },
   components: {
     UserStore: _UserStore__WEBPACK_IMPORTED_MODULE_0__["default"],
     Welcome: _Welcome__WEBPACK_IMPORTED_MODULE_1__["default"],
-    GameScreen: _GameScreen__WEBPACK_IMPORTED_MODULE_2__["default"],
-    Login: _Login__WEBPACK_IMPORTED_MODULE_3__["default"]
+    // GameScreen,
+    Login: _Login__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -2554,7 +2548,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    login: String,
+    register: String,
+    forgot: String
+  },
   data: function data() {
     return {
       fields: {},
@@ -2562,6 +2569,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    forgotPassword: function forgotPassword() {
+      console.log(this.forgot);
+      window.location.href = this.forgot;
+    },
     goBack: function goBack() {
       this.$emit('clicked', 'test');
     },
@@ -2569,13 +2580,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.errors = {};
-      axios.post('/login', this.fields).then(function (response) {
-        console.log(response.data.status);
-
+      axios.post(this.login, this.fields).then(function (response) {
         if (response.data.status !== "error") {
-          alert('Login attempt!');
-
-          _this.$emit('signin');
+          alert('Login successful!');
+          window.location.href = '/';
         } else {
           alert("there was an error in the response");
           _this.errors = response.data;
@@ -2816,6 +2824,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    register: String
+  },
   data: function data() {
     return {
       fields: {},
@@ -2826,17 +2837,16 @@ __webpack_require__.r(__webpack_exports__);
     goBack: function goBack() {
       this.$emit('clicked', 'test');
     },
-    startGame: function startGame() {
-      this.$emit('begin');
-    },
+    // startGame() {
+    //     this.$emit('begin')
+    // },
     submit: function submit() {
       var _this = this;
 
       this.errors = {};
-      axios.post('/submit', this.fields).then(function (response) {
+      axios.post(this.register, this.fields).then(function (response) {
         alert('Message sent!');
-
-        _this.startGame();
+        window.location.href = '/';
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this.errors = error.response.data.errors || {};
@@ -38579,30 +38589,18 @@ var render = function() {
       [
         _c(
           "div",
-          { staticClass: "flex flex-row container w-full justify-around" },
+          { staticClass: "flex flex-row container mx-auto w-full" },
           [
-            _c(
-              "button",
-              {
-                staticClass:
-                  "\n            w-1/3 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-                attrs: { type: "button" },
-                on: { click: _vm.startGame }
-              },
-              [_vm._v("Start Game\n            ")]
-            ),
+            _c("h1", { staticClass: "font-display text-xs" }, [
+              _vm._v("The next alien attack will take place in:")
+            ]),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass:
-                  "\n            w-1/3 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-                attrs: { type: "button" },
-                on: { click: _vm.goHome }
-              },
-              [_vm._v("Save and Quit\n            ")]
-            )
-          ]
+            _c("timer", {
+              attrs: { reset: _vm.gameProgress.resetClock },
+              on: { time: _vm.addToProgress, reset: _vm.resetTimer }
+            })
+          ],
+          1
         ),
         _vm._v(" "),
         _c(
@@ -38613,19 +38611,28 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "w-1/3 container mx-auto flex flex-row justify-between items-center"
+                  "font-display text-xs w-1/3 container mx-auto flex flex-col justify-around items-center"
               },
               [
-                _c("p", { staticClass: "font-display" }, [
-                  _vm._v("Alien attack in: ")
-                ]),
-                _vm._v(" "),
-                _c("timer", {
-                  attrs: { reset: _vm.gameProgress.resetClock },
-                  on: { time: _vm.addToProgress, reset: _vm.resetTimer }
-                })
-              ],
-              1
+                _c("div", [
+                  _c(
+                    "ul",
+                    { attrs: { id: "v-for-object" } },
+                    _vm._l(_vm.gameProgress.resources, function(key, value) {
+                      return _c("li", [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(value) +
+                            " : " +
+                            _vm._s(key) +
+                            "\n                        "
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ]
             ),
             _vm._v(" "),
             _c(
@@ -38635,7 +38642,7 @@ var render = function() {
                   "w-1/3 container mx-auto flex flex-row justify-center items-center"
               },
               [
-                _c("p", { staticClass: "font-display" }, [
+                _c("p", { staticClass: "text-xs font-display" }, [
                   _vm._v("Score: " + _vm._s(_vm.gameProgress.score))
                 ])
               ]
@@ -38645,11 +38652,11 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "w-1/3 container mx-auto flex flex-row justify-between items-center"
+                  "w-1/3 container mx-auto flex flex-row justify-around items-center"
               },
               [
-                _c("p", { staticClass: "font-display" }, [
-                  _vm._v("Username " + _vm._s(_vm.userNameLara))
+                _c("p", { staticClass: "text-xs font-display" }, [
+                  _vm._v(_vm._s(_vm.username))
                 ]),
                 _vm._v(" "),
                 _c("img", {
@@ -38661,60 +38668,59 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c("div", [
-          _c(
-            "ul",
-            { attrs: { id: "v-for-object" } },
-            _vm._l(_vm.gameProgress.resources, function(key, value) {
-              return _c("li", [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(key) +
-                    " : " +
-                    _vm._s(value) +
-                    "\n                "
-                )
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-full flex justify-center my-4" }, [
-          _c(
-            "div",
-            {
+        _c("div", { staticClass: "flex flex-row justify-between w-full" }, [
+          _c("div", [
+            _c("div", {
               directives: [
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.displayModal,
-                  expression: "displayModal"
+                  value: _vm.value,
+                  expression: "value"
+                }
+              ]
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex justify-center my-4" }, [
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.displayModal,
+                    expression: "displayModal"
+                  }
+                ],
+                staticClass: "h-32 flex justify-center my-4"
+              },
+              [_c("display-modal")],
+              1
+            ),
+            _vm._v(" "),
+            _c("canvas", {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: !_vm.displayModal,
+                  expression: "!displayModal"
                 }
               ],
-              staticClass: "h-32 flex justify-center my-4"
-            },
-            [_c("display-modal")],
-            1
-          ),
-          _vm._v(" "),
-          _c("canvas", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.displayModal,
-                expression: "!displayModal"
-              }
-            ],
-            staticClass: "border-solid border-gray-300 border-4 bg-green-200",
-            attrs: { id: "gameCanvas" }
-          })
+              staticClass: "border-solid border-gray-300 border-4 bg-green-200",
+              attrs: { id: "gameCanvas" }
+            })
+          ])
         ]),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "border-4 border-solid border-red-300" },
+          {
+            staticClass:
+              "w-3/4 container mx-auto cursor-pointer border-4 border-solid border-red-300"
+          },
           [
             _c("multiselect", {
               attrs: {
@@ -38761,6 +38767,17 @@ var render = function() {
               on: { click: _vm.build }
             },
             [_vm._v("Build it!\n            ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+              attrs: { type: "button" },
+              on: { click: _vm.startGame }
+            },
+            [_vm._v("Test Modal\n            ")]
           )
         ])
       ]
@@ -38804,7 +38821,11 @@ var render = function() {
           _vm._v(" "),
           _vm.showLogin
             ? _c("login", {
-                attrs: { username: _vm.username },
+                attrs: {
+                  forgot: _vm.forgot,
+                  login: _vm.login,
+                  username: _vm.username
+                },
                 on: { clicked: _vm.goBack, signin: _vm.startGame }
               })
             : _vm._e(),
@@ -38812,13 +38833,6 @@ var render = function() {
           _vm.create
             ? _c("user-store", {
                 on: { clicked: _vm.goBack, begin: _vm.startGame }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.showGame
-            ? _c("game-screen", {
-                attrs: { username: _vm.username },
-                on: { clicked: _vm.goHome }
               })
             : _vm._e()
         ],
@@ -38886,34 +38900,34 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.fields.username,
-                      expression: "fields.username"
+                      value: _vm.fields.email,
+                      expression: "fields.email"
                     }
                   ],
                   staticClass:
-                    "w-full p-2 rounded-lg\n        border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
+                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "text",
-                    name: "username",
-                    id: "username",
-                    placeholder: "username"
+                    name: "email",
+                    id: "email",
+                    placeholder: "email"
                   },
-                  domProps: { value: _vm.fields.username },
+                  domProps: { value: _vm.fields.email },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.fields, "username", $event.target.value)
+                      _vm.$set(_vm.fields, "email", $event.target.value)
                     }
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors && _vm.errors.username
+                _vm.errors && _vm.errors.email
                   ? _c("div", { staticClass: "text-danger" }, [
                       _vm._v(
                         "\n                    " +
-                          _vm._s(_vm.errors.username[0]) +
+                          _vm._s(_vm.errors.email[0]) +
                           "\n                "
                       )
                     ])
@@ -38931,7 +38945,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "p-2 w-full rounded-lg\n        border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
+                    "p-2 w-full rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "password",
                     name: "password",
@@ -38977,7 +38991,7 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "\n    w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n        p-2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
+                    "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: { type: "button" },
                   on: { click: _vm.goBack }
                 },
@@ -38988,7 +39002,7 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "\n    w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n        p-2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
+                    "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-green-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: { type: "submit" }
                 },
                 [_vm._v("Login\n            ")]
@@ -38996,7 +39010,20 @@ var render = function() {
             ]
           )
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex justify-center" }, [
+        _c(
+          "button",
+          {
+            staticClass:
+              "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+            attrs: { type: "button" },
+            on: { click: _vm.forgotPassword }
+          },
+          [_vm._v("Forgot password?\n        ")]
+        )
+      ])
     ]
   )
 }
@@ -39228,17 +39255,6 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c(
-        "button",
-        {
-          staticClass:
-            "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
-          attrs: { type: "button" },
-          on: { click: _vm.startGame }
-        },
-        [_vm._v("Proceed")]
-      ),
-      _vm._v(" "),
-      _c(
         "form",
         {
           staticClass: "flex flex-row flex-wrap container mx-auto w-full",
@@ -39268,7 +39284,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "w-full p-2 rounded-lg\n                    border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
                   attrs: {
                     type: "text",
                     name: "username",
@@ -39304,7 +39320,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "p-2 w-full rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "p-2 w-full rounded-lg\n                    border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
                   attrs: {
                     type: "email",
                     name: "email",
@@ -39340,7 +39356,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "w-full p-2 rounded-lg\n                    border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
                   attrs: { id: "message", name: "message", rows: "5" },
                   domProps: { value: _vm.fields.message },
                   on: {
@@ -39375,7 +39391,7 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "\n                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500\n                    p-2 border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
                   attrs: { type: "button" },
                   on: { click: _vm.goBack }
                 },
@@ -39386,10 +39402,10 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "\n            w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "\n                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                    p-2 border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center",
                   attrs: { type: "submit" }
                 },
-                [_vm._v("Save\n            ")]
+                [_vm._v("Save\n                ")]
               )
             ]
           )
@@ -39412,7 +39428,7 @@ var staticRenderFns = [
             "div",
             {
               staticClass:
-                "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center"
+                "w-full p-2 rounded-lg\n                    border-4 border-gray-400 border-solid\n                     my-2 flex justify-center align-center\n                      content-center"
             },
             [_c("p", [_vm._v("x")])]
           )
@@ -39468,24 +39484,20 @@ var render = function() {
             "div",
             {
               staticClass:
-                "rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n        p-2 w-1/2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center\n          content-center",
+                "rounded-lg cursor-pointer hover:text-white hover:bg-blue-500\n                p-2 w-1/2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
               on: { click: _vm.fireLog }
             },
-            [
-              _c("a", { staticClass: "font-semibold" }, [
-                _vm._v("Continue Game")
-              ])
-            ]
+            [_c("a", { staticClass: "font-semibold" }, [_vm._v("Login")])]
           ),
           _vm._v(" "),
           _c(
             "div",
             {
               staticClass:
-                "rounded-lg cursor-pointer hover:text-white hover:bg-green-500\n        p-2 w-1/2 border-4 border-gray-400 border-solid\n         my-2 flex justify-center align-center content-center",
+                "rounded-lg cursor-pointer hover:text-white hover:bg-green-500\n                p-2 w-1/2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center content-center",
               on: { click: _vm.createUser }
             },
-            [_c("a", { staticClass: "font-semibold" }, [_vm._v("Create User")])]
+            [_c("a", { staticClass: "font-semibold" }, [_vm._v("Register")])]
           )
         ]
       )

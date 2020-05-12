@@ -2,59 +2,51 @@
     <div class="h-screen">
         <div class="container mx-auto w-3/4 flex flex-col h-full py-1 justify-center items-center">
 
-            <div class="flex flex-row container w-full justify-around">
-                <button type="button" v-on:click="startGame" class="
-                w-1/3 rounded-lg cursor-pointer hover:text-white hover:bg-red-500
-                    p-2 border-4 border-gray-400 border-solid
-                     my-2 flex justify-center align-center
-                      content-center">Start Game
-                </button>
-
-                <button type="button" v-on:click="goHome" class="
-                w-1/3 rounded-lg cursor-pointer hover:text-white hover:bg-red-500
-                    p-2 border-4 border-gray-400 border-solid
-                     my-2 flex justify-center align-center
-                      content-center">Save and Quit
-                </button>
+            <div class="flex flex-row container mx-auto w-full">
+                <h1 class="font-display text-xs">The next alien attack will take place in:</h1>
+                <timer
+                    @time="addToProgress"
+                    :reset="gameProgress.resetClock"
+                    @reset="resetTimer"
+                ></timer>
             </div>
-
             <div class="container mx-auto w-full flex flex-row py-2">
-                <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
-                    <p class="font-display">Alien attack in: </p>
 
-                    <timer
-                        @time="addToProgress"
-                        :reset="gameProgress.resetClock"
-                        @reset="resetTimer"
-                    ></timer>
 
+                <div class="font-display text-xs w-1/3 container mx-auto flex flex-col justify-around items-center">
+                    <div>
+                        <ul id="v-for-object">
+                            <li v-for="(key, value) in gameProgress.resources">
+                                {{ value }} : {{ key }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="w-1/3 container mx-auto flex flex-row justify-center items-center">
-                    <p class="font-display">Score: {{ gameProgress.score }}</p>
+                    <p class="text-xs font-display">Score: {{ gameProgress.score }}</p>
                 </div>
-                <div class="w-1/3 container mx-auto flex flex-row justify-between items-center">
-                    <p class="font-display">Username {{ userNameLara }}</p>
+                <div class="w-1/3 container mx-auto flex flex-row justify-around items-center">
+                    <p class="text-xs font-display">{{ username }}</p>
                     <img class="w-1/3" :src="userImage">
                 </div>
             </div>
 
-            <div>
-                <ul id="v-for-object">
-                    <li v-for="(key, value) in gameProgress.resources">
-                        {{ key }} : {{ value }}
-                    </li>
-                </ul>
-            </div>
+            <div class="flex flex-row justify-between w-full">
+                <div>
+                    <div v-show="value">
 
-            <div class="w-full flex justify-center my-4">
+                    </div>
+                </div>
+            <div class="flex justify-center my-4">
                 <div v-show="displayModal" class="h-32 flex justify-center my-4">
                     <display-modal></display-modal>
                 </div>
                 <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200"
                         id="gameCanvas"></canvas>
             </div>
+            </div>
 
-            <div class="border-4 border-solid border-red-300">
+            <div class="w-3/4 container mx-auto cursor-pointer border-4 border-solid border-red-300">
                 <multiselect v-model="value"
                              deselect-label="Can't remove this value"
                              track-by="title"
@@ -75,6 +67,13 @@
                      my-2 flex justify-center align-center
                       content-center">Build it!
                 </button>
+
+                <button type="button" v-on:click="startGame" class="
+                w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500
+                    p-2 border-4 border-gray-400 border-solid
+                     my-2 flex justify-center align-center
+                      content-center">Test Modal
+                </button>
             </div>
 
         </div>
@@ -91,7 +90,6 @@
         },
         data() {
             return {
-                userNameLara: null,
                 userImage: './images/testalien.jpg',
                 value: null,
                 displayModal: false,
@@ -146,12 +144,6 @@
                     resetClock: false
                 }
             }
-        },
-        beforeMount() {
-                axios.post('/user').then(response => {
-                    this.userNameLara = response.data
-                    console.log(this.userNameLara)
-                })
         },
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
@@ -415,6 +407,7 @@
             saveProgress() {
                 axios.post('/game-progress', this.gameProgress).then(response => {
                     alert('Game saved!');
+                    // TODO: LOGOUT OF THE GAME USING THE ROUTE...
                 });
             },
         }

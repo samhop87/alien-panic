@@ -9,6 +9,8 @@
             ></welcome>
 
             <login
+                :forgot="forgot"
+                :login="login"
                 :username="username"
                 v-if="showLogin"
                 @clicked="goBack"
@@ -21,11 +23,11 @@
                 @begin="startGame"
             ></user-store>
 
-            <game-screen
-                :username="username"
-                v-if="showGame"
-                @clicked="goHome"
-            ></game-screen>
+<!--            <game-screen-->
+<!--                :username="username"-->
+<!--                v-if="showGame"-->
+<!--                @clicked="goHome"-->
+<!--            ></game-screen>-->
 
         </transition>
     </div>
@@ -34,18 +36,21 @@
 <script>
     import UserStore from "./UserStore"
     import Welcome from "./Welcome"
-    import GameScreen from "./GameScreen"
+    // import GameScreen from "./GameScreen"
     import Login from "./Login"
 
     export default {
         mixins: [],
         props: {
-            username: String
+            username: String,
+            login: String,
+            register: String,
+            forgot: String,
         },
         components: {
             UserStore,
             Welcome,
-            GameScreen,
+            // GameScreen,
             Login
         },
         data() {
