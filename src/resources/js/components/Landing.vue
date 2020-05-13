@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="text-white bg-black">
         <transition mode="out-in" name="fade">
 
             <welcome
@@ -22,13 +22,6 @@
                 @clicked="goBack"
                 @begin="startGame"
             ></user-store>
-
-<!--            <game-screen-->
-<!--                :username="username"-->
-<!--                v-if="showGame"-->
-<!--                @clicked="goHome"-->
-<!--            ></game-screen>-->
-
         </transition>
     </div>
 </template>
@@ -51,7 +44,6 @@
         components: {
             UserStore,
             Welcome,
-            // GameScreen,
             Login
         },
         data() {

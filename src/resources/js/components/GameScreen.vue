@@ -37,13 +37,13 @@
 
                     </div>
                 </div>
-            <div class="flex justify-center my-4">
-                <div v-show="displayModal" class="h-32 flex justify-center my-4">
-                    <display-modal></display-modal>
+                <div class="flex justify-center my-4">
+                    <div v-show="displayModal" class="h-32 flex justify-center my-4">
+                        <display-modal></display-modal>
+                    </div>
+                    <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200"
+                            id="gameCanvas"></canvas>
                 </div>
-                <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200"
-                        id="gameCanvas"></canvas>
-            </div>
             </div>
 
             <div class="w-3/4 container mx-auto cursor-pointer border-4 border-solid border-red-300">
@@ -412,10 +412,9 @@
                 this.logoff()
             },
             logoff() {
-                // TODO: page needs to change.
                 axios.post(this.logout).then(response => {
-                    alert('Logging out');
-                });
+                    window.location.href = '/login'
+                })
             }
         }
     }

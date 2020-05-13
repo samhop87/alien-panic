@@ -2379,9 +2379,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.logoff();
     },
     logoff: function logoff() {
-      // TODO: page needs to change.
       axios.post(this.logout).then(function (response) {
-        alert('Logging out');
+        window.location.href = '/login';
       });
     }
   }
@@ -2429,13 +2428,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
  // import GameScreen from "./GameScreen"
 
@@ -2452,7 +2444,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     UserStore: _UserStore__WEBPACK_IMPORTED_MODULE_0__["default"],
     Welcome: _Welcome__WEBPACK_IMPORTED_MODULE_1__["default"],
-    // GameScreen,
     Login: _Login__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
@@ -38817,6 +38808,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "text-white bg-black" },
     [
       _c(
         "transition",
