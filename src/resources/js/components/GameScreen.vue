@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen">
+    <div class="h-screen bg-black text-white">
         <div class="container mx-auto w-3/4 flex flex-col h-full py-1 justify-center items-center">
 
             <div class="flex flex-row container mx-auto w-full">
@@ -11,7 +11,6 @@
                 ></timer>
             </div>
             <div class="container mx-auto w-full flex flex-row py-2">
-
 
                 <div class="font-display text-xs w-1/3 container mx-auto flex flex-col justify-around items-center">
                     <div>
@@ -132,6 +131,7 @@
                 },
                 gameProgress: {
                     score: 0,
+                    attacksSurvived: 0,
                     resources: {
                         rocks: 0,
                         magic: 0,
@@ -398,6 +398,8 @@
                 // TODO: Calculate damage based on alien strength vs. score.
                 // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
                 //  array, and randomly destroy the number by using clearRect() on their coordinates.
+                // If the town survives:
+                this.gameProgress.attacksSurvived++
             },
             resetTimer(value) {
                 this.gameProgress.resetClock = true

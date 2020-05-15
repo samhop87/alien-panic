@@ -2,10 +2,15 @@
 
 @section('content')
     <div id="app">
-        <game-screen
-            username="{{ Auth::user()->name }}"
-            logout="{{ route('logout') }}"
+        <transition mode="out-in" name="fade">
+            <game-screen
+                username="{{ Auth::user()->name }}"
+                logout="{{ route('logout') }}"
+            ></game-screen>
 
-        ></game-screen>
+            <display-modal>
+                :choice="choice"
+            </display-modal>
+        </transition>
     </div>
-    @endsection
+@endsection

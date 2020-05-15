@@ -7,7 +7,7 @@
 
             <div class="flex flex-col flex-wrap container mx-auto w-full md:w-1/2">
                 <div class="w-5/6 p-2 container mx-auto">
-                    <input type="text" class="w-full p-2 rounded-lg
+                    <input type="text" class="text-black w-full p-2 rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
                       content-center"
@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="w-5/6 p-2 container mx-auto">
-                    <input type="password" class="p-2 w-full rounded-lg
+                    <input type="password" class="text-black p-2 w-full rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
                       content-center"

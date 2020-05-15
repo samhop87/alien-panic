@@ -2030,7 +2030,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2088,6 +2087,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       },
       gameProgress: {
         score: 0,
+        attacksSurvived: 0,
         resources: {
           rocks: 0,
           magic: 0,
@@ -2365,6 +2365,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       // TODO: Calculate damage based on alien strength vs. score.
       // TODO: determine number of buildings to destroy. Then pick from the buildings in the construction
       //  array, and randomly destroy the number by using clearRect() on their coordinates.
+      // If the town survives:
+
+      this.gameProgress.attacksSurvived++;
     },
     resetTimer: function resetTimer(value) {
       this.gameProgress.resetClock = true;
@@ -38579,7 +38582,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "h-screen" }, [
+  return _c("div", { staticClass: "h-screen bg-black text-white" }, [
     _c(
       "div",
       {
@@ -38906,7 +38909,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "text-black w-full p-2 rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "text",
                     name: "email",
@@ -38946,7 +38949,7 @@ var render = function() {
                     }
                   ],
                   staticClass:
-                    "p-2 w-full rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+                    "text-black p-2 w-full rounded-lg\n                border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
                   attrs: {
                     type: "password",
                     name: "password",
