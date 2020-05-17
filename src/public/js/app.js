@@ -1915,9 +1915,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     username: String
+  },
+  data: function data() {
+    return {};
+  },
+  methods: {
+    test: function test() {
+      this.$emit('alert');
+    }
   }
 });
 
@@ -1946,15 +1960,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     username: String,
-    logout: String
+    logout: String,
+    details: String
   },
   data: function data() {
-    return {};
+    return {
+      showModal: false,
+      savedGame: null
+    };
   },
-  methods: {}
+  beforeMount: function beforeMount() {
+    this.savedGame = JSON.parse(this.details);
+  },
+  methods: {
+    alert: function alert() {
+      this.showModal = !this.showModal;
+    }
+  }
 });
 
 /***/ }),
@@ -2071,6 +2103,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2078,13 +2114,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   },
   props: {
     username: String,
-    logout: String
+    logout: String,
+    savedGame: Object
   },
   data: function data() {
     return {
       userImage: './images/testalien.jpg',
       value: null,
-      displayModal: false,
       vueCanvas: null,
       options: [{
         title: 'Quarry',
@@ -2143,6 +2179,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     };
   },
+  beforeMount: function beforeMount() {
+    // TODO: We need to take the prop (if it exists?) and substitute in the saved data.
+    console.log(this.savedGame);
+  },
   mounted: function mounted() {
     this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
   },
@@ -2152,11 +2192,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       // Start the timer
       // TODO: THIS IS A TEST FUNCTION.
       // TODO: MOVE IT SO THAT IT DISPLAYS AS PART OF THE PROGRESS FUNCTION.
-      if (this.displayModal) {
-        this.displayModal = false;
-      } else {
-        this.displayModal = true;
-      }
+      this.$emit('alert', 'test');
     },
     checkPrice: function checkPrice(type) {
       // pay for the building with resources
@@ -2231,7 +2267,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var width = null;
       var height = null;
       var colour = null;
-      var store = null;
+      var store = null; // TODO: Fix this so there's a better default value.
+
       var type = this.value.title ? this.value.title : "test"; // We need to work out the cost/payment issue here, and adjust totals accordingly.
 
       if (this.checkPrice(type) === false) {
@@ -2312,6 +2349,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.vueCanvas.fillStyle = colour;
       this.vueCanvas.fillRect(x, y, width, height);
       this.vueCanvas.stroke(); // This stores the individual game objects in the construction array
+      // TODO: Make sure these are stored correctly, since they'll be used when
+      // TODO: the game restarts to map the elements back on the canvas.
 
       store.push({
         type: type,
@@ -2344,11 +2383,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     goHome: function goHome() {
       // Save game with axios.
-      this.saveProgress(); // Take user back to home screen
-      // TODO: Send back clearing argument; clear current progress and logout user.
-      // this.vueCanvas.clearRect(0, 0, 400, 200);
-
-      this.$emit('clicked', 'test');
+      this.saveProgress();
+      this.$emit('clicked');
     },
     addToProgress: function addToProgress(value) {
       this.timer = value;
@@ -2366,8 +2402,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       if (value === 0) {
         this.alienAttack();
         this.resetTimer();
-      } // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
-
+      }
     },
     preventGameClock: function preventGameClock() {
       this.gameProgress.resetClock = false;
@@ -2388,9 +2423,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
     },
     initiateRandomEvent: function initiateRandomEvent() {
-      var _int = this.rollDice();
+      var _int = this.rollDice(); // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
+
     },
-    openingEvent: function openingEvent() {// get this right, and you're rewarded with 5 rocks.
+    openingEvent: function openingEvent() {// TODO: Like the random event, but takes place at the start of the game (if a new game!)
+      // get this right, and you're rewarded with 5 rocks.
       // change the data for a v-if to true, displaying options
       // change new options array to match.
       // if the option chosen is right, reward. If wrong, display message.
@@ -38495,7 +38532,18 @@ var render = function() {
   return _c("div", [
     _c("h1", [_vm._v("TEST")]),
     _vm._v(" "),
-    _c("h2", [_vm._v(_vm._s(this.username))])
+    _c("h2", [_vm._v(_vm._s(this.username))]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass:
+          "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+        attrs: { type: "button" },
+        on: { click: _vm.test }
+      },
+      [_vm._v("go back\n    ")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -38521,14 +38569,32 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "transition",
-    { attrs: { mode: "out-in", name: "fade" } },
+    "div",
     [
-      _c("game-screen", {
-        attrs: { username: _vm.username, logout: _vm.logout }
-      }),
-      _vm._v(" "),
-      _c("alert-modal", { attrs: { username: _vm.username } })
+      _c(
+        "transition",
+        { attrs: { mode: "out-in", name: "fade" } },
+        [
+          !_vm.showModal
+            ? _c("game-screen", {
+                attrs: {
+                  username: _vm.username,
+                  logout: _vm.logout,
+                  savedGame: _vm.savedGame
+                },
+                on: { alert: _vm.alert }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showModal
+            ? _c("alert-modal", {
+                attrs: { username: _vm.username },
+                on: { alert: _vm.alert }
+              })
+            : _vm._e()
+        ],
+        1
+      )
     ],
     1
   )
@@ -38658,37 +38724,7 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "flex justify-center my-4" }, [
-            _c(
-              "div",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.displayModal,
-                    expression: "displayModal"
-                  }
-                ],
-                staticClass: "h-32 flex justify-center my-4"
-              },
-              [_c("display-modal")],
-              1
-            ),
-            _vm._v(" "),
-            _c("canvas", {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: !_vm.displayModal,
-                  expression: "!displayModal"
-                }
-              ],
-              staticClass: "border-solid border-gray-300 border-4 bg-green-200",
-              attrs: { id: "gameCanvas" }
-            })
-          ])
+          _vm._m(0)
         ]),
         _vm._v(" "),
         _c(
@@ -38754,13 +38790,36 @@ var render = function() {
               on: { click: _vm.saveProgress }
             },
             [_vm._v("Test Modal\n            ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "\n            w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500\n                p-2 border-4 border-gray-400 border-solid\n                 my-2 flex justify-center align-center\n                  content-center",
+              attrs: { type: "button" },
+              on: { click: _vm.startGame }
+            },
+            [_vm._v("Switch\n            ")]
           )
         ])
       ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex justify-center my-4" }, [
+      _c("canvas", {
+        staticClass: "border-solid border-gray-300 border-4 bg-green-200",
+        attrs: { id: "gameCanvas" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 

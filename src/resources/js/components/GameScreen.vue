@@ -37,10 +37,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center my-4">
-                    <div v-show="displayModal" class="h-32 flex justify-center my-4">
-                        <display-modal></display-modal>
-                    </div>
-                    <canvas v-show="!displayModal" class="border-solid border-gray-300 border-4 bg-green-200"
+                    <canvas class="border-solid border-gray-300 border-4 bg-green-200"
                             id="gameCanvas"></canvas>
                 </div>
             </div>
@@ -73,6 +70,13 @@
                      my-2 flex justify-center align-center
                       content-center">Test Modal
                 </button>
+
+                <button type="button" v-on:click="startGame" class="
+                w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500
+                    p-2 border-4 border-gray-400 border-solid
+                     my-2 flex justify-center align-center
+                      content-center">Switch
+                </button>
             </div>
 
         </div>
@@ -86,13 +90,13 @@
         components: {Multiselect},
         props: {
             username: String,
-            logout: String
+            logout: String,
+            savedGame: Object
         },
         data() {
             return {
                 userImage: './images/testalien.jpg',
                 value: null,
-                displayModal: false,
                 vueCanvas: null,
 
                 options: [
@@ -146,6 +150,10 @@
                 }
             }
         },
+        beforeMount() {
+            // TODO: We need to take the prop (if it exists?) and substitute in the saved data.
+            console.log(this.savedGame)
+        },
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
         },
@@ -156,18 +164,14 @@
 
                 // TODO: THIS IS A TEST FUNCTION.
                 // TODO: MOVE IT SO THAT IT DISPLAYS AS PART OF THE PROGRESS FUNCTION.
-                if (this.displayModal) {
-                    this.displayModal = false
-                } else {
-                    this.displayModal = true
-                }
+                this.$emit('alert', 'test')
+
             },
             checkPrice(type) {
                 // pay for the building with resources
                 let rocksTotal = this.gameProgress.resources.rocks
                 let magicTotal = this.gameProgress.resources.magic
                 let totalCost = null;
-
 
                 switch (type) {
                     case "Quarry":
@@ -224,6 +228,7 @@
                 let colour = null;
                 let store = null;
 
+                // TODO: Fix this so there's a better default value.
                 let type = this.value.title ? this.value.title : "test"
 
                 // We need to work out the cost/payment issue here, and adjust totals accordingly.
@@ -304,6 +309,8 @@
                 this.vueCanvas.stroke();
 
                 // This stores the individual game objects in the construction array
+                // TODO: Make sure these are stored correctly, since they'll be used when
+                // TODO: the game restarts to map the elements back on the canvas.
                 store.push({
                     type: type,
                     ax: x,
@@ -333,16 +340,10 @@
             goHome() {
                 // Save game with axios.
                 this.saveProgress()
-
-                // Take user back to home screen
-                // TODO: Send back clearing argument; clear current progress and logout user.
-                // this.vueCanvas.clearRect(0, 0, 400, 200);
-
-                this.$emit('clicked', 'test')
+                this.$emit('clicked')
             },
             addToProgress(value) {
                 this.timer = value
-
                 this.addResources()
                 this.initiateRandomEvent()
 
@@ -357,8 +358,6 @@
                     this.alienAttack()
                     this.resetTimer()
                 }
-
-                // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
             },
             preventGameClock() {
                 this.gameProgress.resetClock = false
@@ -379,8 +378,10 @@
             },
             initiateRandomEvent() {
                 let int = this.rollDice()
+                // TODO: initiate new 'events' at certain periods. Eg. townspeople demanding something.
             },
             openingEvent() {
+                // TODO: Like the random event, but takes place at the start of the game (if a new game!)
                 // get this right, and you're rewarded with 5 rocks.
                 // change the data for a v-if to true, displaying options
                 // change new options array to match.

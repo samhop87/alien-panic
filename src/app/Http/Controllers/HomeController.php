@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\GameProgress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // This takes users to game once logged in.
-        return view('index');
+        $savedGame = GameProgress::where('userId', Auth::User()->id)->first()->toJson();
+        return view('index', compact(['savedGame']));
     }
 }

@@ -1,26 +1,44 @@
 <template>
-    <transition mode="out-in" name="fade">
+    <div>
+        <transition mode="out-in" name="fade">
 
-    <game-screen
-        :username="username"
-        :logout="logout"
-    ></game-screen>
+            <game-screen
+                v-if="!showModal"
+                :username="username"
+                :logout="logout"
+                :savedGame="savedGame"
+                @alert="alert"
+            ></game-screen>
 
-        <alert-modal
-            :username="username"
-        ></alert-modal>
-        
-    </transition>
+            <alert-modal
+                v-if="showModal"
+                :username="username"
+                @alert="alert"
+            ></alert-modal>
+        </transition>
+
+    </div>
 </template>
 <script>
     export default {
         props: {
             username: String,
-            logout: String
+            logout: String,
+            details: String
         },
         data() {
-            return {}
+            return {
+                showModal: false,
+                savedGame: null
+            }
         },
-        methods: {}
+        beforeMount() {
+            this.savedGame = JSON.parse(this.details)
+        },
+        methods: {
+            alert() {
+                this.showModal = !this.showModal
+            }
+        }
     }
 </script>
