@@ -12,6 +12,7 @@
         },
         data() {
             return {
+                // TODO: This needs refactoring. Perhaps this would actually be better as part of main component?
                 timerCount: 5
             }
         },

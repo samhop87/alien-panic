@@ -1980,7 +1980,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   beforeMount: function beforeMount() {
-    this.savedGame = JSON.parse(this.details);
+    if (this.details) {
+      this.savedGame = JSON.parse(this.details);
+    }
   },
   methods: {
     alert: function alert() {
@@ -2180,8 +2182,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   beforeMount: function beforeMount() {
-    // TODO: We need to take the prop (if it exists?) and substitute in the saved data.
-    console.log(this.savedGame);
+    if (this.savedGame) {
+      this.gameProgress.timer = this.savedGame.timeRemaining;
+      this.gameProgress.buildings.libraries = this.savedGame.libraries;
+      this.gameProgress.buildings.quarry = this.savedGame.quarries;
+      this.gameProgress.resources.rocks = this.savedGame.rocks;
+      this.gameProgress.resources.magic = this.savedGame.magic;
+      this.gameProgress.resources.defenders = this.savedGame.defenders;
+      this.gameProgress.score = this.savedGame.score;
+      this.gameProgress.attacksSurvived = this.savedGame.attacksSurvived;
+    }
   },
   mounted: function mounted() {
     this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
@@ -2701,6 +2711,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      // TODO: This needs refactoring. Perhaps this would actually be better as part of main component?
       timerCount: 5
     };
   },

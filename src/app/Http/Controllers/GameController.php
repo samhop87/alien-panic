@@ -13,6 +13,7 @@ class GameController extends Controller
         GameProgress::updateOrCreate([
             'userId' => Auth::user()->id
         ],[
+            'attacksSurvived' => $request->attacksSurvived,
             'score' => $request->score,
             'rocks' => $request->resources['rocks'],
             'magic' => $request->resources['magic'],

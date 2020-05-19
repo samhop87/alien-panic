@@ -16,12 +16,14 @@ class CreateGameProgressTable extends Migration
         Schema::create('game_progress', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->tinyInteger('userId');
+            $table->integer('score');
             $table->tinyInteger('timeRemaining');
             $table->integer('rocks');
             $table->integer('magic');
             $table->integer('quarries');
             $table->integer('libraries');
             $table->integer('defenders');
+            $table->integer('attacksSurvived');
             $table->timestamps();
         });
     }

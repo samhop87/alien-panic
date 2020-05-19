@@ -151,8 +151,16 @@
             }
         },
         beforeMount() {
-            // TODO: We need to take the prop (if it exists?) and substitute in the saved data.
-            console.log(this.savedGame)
+            if (this.savedGame) {
+                this.gameProgress.timer = this.savedGame.timeRemaining
+                this.gameProgress.buildings.libraries = this.savedGame.libraries
+                this.gameProgress.buildings.quarry = this.savedGame.quarries
+                this.gameProgress.resources.rocks = this.savedGame.rocks
+                this.gameProgress.resources.magic = this.savedGame.magic
+                this.gameProgress.resources.defenders = this.savedGame.defenders
+                this.gameProgress.score = this.savedGame.score
+                this.gameProgress.attacksSurvived = this.savedGame.attacksSurvived
+            }
         },
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");

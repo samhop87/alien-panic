@@ -25,7 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $savedGame = GameProgress::where('userId', Auth::User()->id)->first()->toJson();
+        $retrieved = GameProgress::where('userId', Auth::User()->id)->first();
+        $savedGame = $retrieved ? $retrieved->toJson() : null;
+
         return view('index', compact(['savedGame']));
     }
 }

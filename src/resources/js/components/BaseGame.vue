@@ -33,7 +33,9 @@
             }
         },
         beforeMount() {
-            this.savedGame = JSON.parse(this.details)
+            if (this.details) {
+                this.savedGame = JSON.parse(this.details)
+            }
         },
         methods: {
             alert() {
