@@ -56,26 +56,26 @@
                 </multiselect>
             </div>
 
-            <div>
+            <div class="flex flex-row w-full justify-between">
                 <button type="button" v-on:click="build" class="
-                w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500
+                w-1/4 rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500
                     p-2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
                       content-center">Build it!
                 </button>
 
                 <button type="button" v-on:click="saveProgress" class="
-                w-full rounded-lg cursor-pointer hover:text-white hover:bg-red-500
+                w-1/4 rounded-lg cursor-pointer hover:text-white hover:bg-red-500
                     p-2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center">Test Modal
+                      content-center">Save and Quit
                 </button>
 
                 <button type="button" v-on:click="startGame" class="
-                w-full rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500
+                w-1/4 rounded-lg cursor-pointer hover:text-white hover:bg-yellow-500
                     p-2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center">Switch
+                      content-center">Modal Test
                 </button>
             </div>
 
@@ -275,11 +275,7 @@
                         colour = 'black'
                         store = this.construction.Quarry
                 }
-
-                // x must always be greater than calcLat
-                // except if calcLat is off canvas.
-                // then y must be greater than calcLong
-                // and then back to checking x again.
+                
                 let x;
                 let y;
 
