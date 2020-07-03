@@ -116,16 +116,16 @@
                 },
                 priceList: {
                     Quarry: {
-                        rocks: 5,
+                        rocks: 2,
                         magic: 0
                     },
                     Library: {
-                        rocks: 10,
+                        rocks: 5,
                         magic: 1
                     },
                     Defender: {
                         rocks: 0,
-                        magic: 20
+                        magic: 10
                     }
                 },
                 coordinateList: {

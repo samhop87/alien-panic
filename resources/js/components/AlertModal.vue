@@ -14,6 +14,7 @@
 <script>
 export default {
     props: {
+        townspeople: Object,
         username: String
     },
     data() {

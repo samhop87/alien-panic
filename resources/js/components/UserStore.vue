@@ -2,11 +2,11 @@
     <div class="flex flex-col justify-around align-center container mx-auto w-2/3 h-screen">
         <h4 class="font-bold font-display text-1xl text-center">Create your user</h4>
 
-<!--        <button type="button" v-on:click="startGame" class="-->
-<!--                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500-->
-<!--                    p-2 border-4 border-gray-400 border-solid-->
-<!--                     my-2 flex justify-center align-center-->
-<!--                      content-center">Proceed</button>-->
+        <!--        <button type="button" v-on:click="startGame" class="-->
+        <!--                w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500-->
+        <!--                    p-2 border-4 border-gray-400 border-solid-->
+        <!--                     my-2 flex justify-center align-center-->
+        <!--                      content-center">Proceed</button>-->
 
         <form class="flex flex-row flex-wrap container mx-auto w-full"
               @submit.prevent="submit">
@@ -29,9 +29,9 @@
                 </div>
 
                 <div class="w-5/6 p-2 container mx-auto">
-                <input class="w-full p-2 rounded-lg border-4 border-gray-400 border-solid
+                    <input class="w-full p-2 rounded-lg border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center content-center"
-                        type="password" id="password" name="password" rows="5" v-model="fields.password"></input>
+                           type="password" id="password" name="password" rows="5" v-model="fields.password"></input>
                     <div v-if="errors && errors.password" class="text-danger">{{ errors.password[0] }}</div>
                 </div>
 
@@ -39,8 +39,10 @@
                     <input class="w-full p-2 rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center" type="password" id="password-confirm" name="password_confirmation" v-model="fields.password_confirmation"></input>
-                    <div v-if="errors && errors.password_confirmation" class="text-danger">{{ errors.password_confirmation[0] }}</div>
+                      content-center" type="password" id="password-confirm" name="password_confirmation"
+                           v-model="fields.password_confirmation"></input>
+                    <div v-if="errors && errors.password_confirmation" class="text-danger">{{errors.password_confirmation[0] }}
+                    </div>
                 </div>
 
             </div>
@@ -60,7 +62,8 @@
                 w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-red-500
                     p-2 border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center">Go back</button>
+                      content-center">Go back
+                </button>
                 <button type="submit" class="
                 w-2/5 rounded-lg cursor-pointer hover:text-white hover:bg-blue-500
                     p-2 border-4 border-gray-400 border-solid
