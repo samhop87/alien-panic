@@ -29,11 +29,18 @@
                 </div>
 
                 <div class="w-5/6 p-2 container mx-auto">
-                <input class="w-full p-2 rounded-lg
+                <input class="w-full p-2 rounded-lg border-4 border-gray-400 border-solid
+                     my-2 flex justify-center align-center content-center"
+                        type="password" id="password" name="password" rows="5" v-model="fields.password"></input>
+                    <div v-if="errors && errors.password" class="text-danger">{{ errors.password[0] }}</div>
+                </div>
+
+                <div class="w-5/6 p-2 container mx-auto">
+                    <input class="w-full p-2 rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center" id="password" name="password" rows="5" v-model="fields.password"></input>
-                    <div v-if="errors && errors.password" class="text-danger">{{ errors.password[0] }}</div>
+                      content-center" type="password" id="password-confirm" name="password_confirmation" v-model="fields.password_confirmation"></input>
+                    <div v-if="errors && errors.password_confirmation" class="text-danger">{{ errors.password_confirmation[0] }}</div>
                 </div>
 
             </div>
@@ -84,7 +91,7 @@
             //     this.$emit('begin')
             // },
             submit() {
-                console.log(this.register)
+                console.log(this.fields)
                 this.errors = {};
                 axios.post('register', this.fields).then(response => {
                     alert('Message sent!');
