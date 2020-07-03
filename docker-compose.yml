@@ -1,83 +1,50 @@
 version: '3'
 
-networks:
-  laravel:
-
 services:
-  nginx:
+  web:
     image: nginx:stable-alpine
-    container_name: nginx
-    ports:
-      - "8080:80"
     volumes:
-      - ./src:/var/www/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - php
-      - mysql
+      - .:/var/www
+      - ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - laravel
-
-  mysql:
-    image: mysql:5.7.29
-    container_name: mysql
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "3306:3306"
+      - docker_network
+      - docker_proxy
     environment:
-      MYSQL_DATABASE: alienpanic
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root_password
-      MYSQL_ROOT_PASSWORD: root_password
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    networks:
-      - laravel
-    volumes:
-      - ./mysql:/var/lib/mysql
-
-  php:
+        - VIRTUAL_HOST=netdev.alien-panic.co.uk
+    restart: unless-stopped
+  app:
+    image: alienpanic-app
+    container_name: alienpanic-app
+    hostname: alienpanic-app
     build:
-      context: .
+      context: .docker/php
       dockerfile: Dockerfile
-    container_name: php
+    working_dir: /var/www
     volumes:
-      - ./src:/var/www/html
-    ports:
-      - "9000:9000"
+      - .:/var/www
     networks:
-      - laravel
-
+      - docker_network
+      - docker_proxy
+    restart: unless-stopped
   composer:
-    image: composer:latest
-    container_name: composer
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    depends_on:
-      - php
-    networks:
-      - laravel
-
-  npm:
-    image: node:13.7
-    container_name: npm
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    entrypoint: ['npm']
-
-  artisan:
+    image: alienpanic-composer
+    container_name: alienpanic-composer
     build:
-      context: .
+      context: .docker/composer
       dockerfile: Dockerfile
-    container_name: artisan
     volumes:
-      - ./src:/var/www/html
-    depends_on:
-      - mysql
-    working_dir: /var/www/html
-    entrypoint: ['php', '/var/www/html/artisan']
+      - .:/var/www
     networks:
-      - laravel
+      - docker_network
+      - docker_proxy
+  assets:
+    image: node:12
+    volumes:
+      - .:/app
+    working_dir: /app
+networks:
+  docker_network:
+    driver: bridge
+  docker_proxy:
+    external:
+      name: docker-proxy
