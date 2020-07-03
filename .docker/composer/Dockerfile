@@ -16,7 +16,6 @@ USER root
 COPY config.json /root/.composer
 COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
 
-COPY docker /root/.ssh/id_rsa
 RUN chmod +x /bin/docker-entrypoint.sh
 RUN dos2unix /bin/docker-entrypoint.sh
 
