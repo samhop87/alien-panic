@@ -18,6 +18,7 @@
             ></login>
 
             <user-store
+                :register="register"
                 v-if="create"
                 @clicked="goBack"
                 @begin="startGame"

@@ -16,8 +16,8 @@
                     <input type="text" class="w-full p-2 rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center" name="username" id="username" placeholder="username" v-model="fields.username"/>
-                    <div v-if="errors && errors.username" class="text-danger">{{ errors.username[0] }}</div>
+                      content-center" name="name" id="name" placeholder="username" v-model="fields.name"/>
+                    <div v-if="errors && errors.name" class="text-danger">{{ errors.name[0] }}</div>
                 </div>
 
                 <div class="w-5/6 p-2 container mx-auto">
@@ -29,11 +29,11 @@
                 </div>
 
                 <div class="w-5/6 p-2 container mx-auto">
-                <textarea class="w-full p-2 rounded-lg
+                <input class="w-full p-2 rounded-lg
                     border-4 border-gray-400 border-solid
                      my-2 flex justify-center align-center
-                      content-center" id="message" name="message" rows="5" v-model="fields.message"></textarea>
-                    <div v-if="errors && errors.message" class="text-danger">{{ errors.message[0] }}</div>
+                      content-center" id="password" name="password" rows="5" v-model="fields.password"></input>
+                    <div v-if="errors && errors.password" class="text-danger">{{ errors.password[0] }}</div>
                 </div>
 
             </div>
@@ -84,8 +84,9 @@
             //     this.$emit('begin')
             // },
             submit() {
+                console.log(this.register)
                 this.errors = {};
-                axios.post(this.register, this.fields).then(response => {
+                axios.post('register', this.fields).then(response => {
                     alert('Message sent!');
                     window.location.href = '/'
                 }).catch(error => {
