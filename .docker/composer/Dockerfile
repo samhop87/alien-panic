@@ -13,7 +13,6 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 USER root
 
-COPY config.json /root/.composer
 COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
 
 RUN chmod +x /bin/docker-entrypoint.sh
