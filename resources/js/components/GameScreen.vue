@@ -109,11 +109,6 @@
                         alt: 'test'
                     },
                 ],
-                construction: {
-                    Quarry: [],
-                    Library: [],
-                    Defender: []
-                },
                 priceList: {
                     Quarry: {
                         rocks: 2,
@@ -145,6 +140,7 @@
                         quarry: 0,
                         libraries: 0
                     },
+                    construction: [],
                     timer: null,
                     resetClock: false
                 }
@@ -174,6 +170,16 @@
                 // TODO: MOVE IT SO THAT IT DISPLAYS AS PART OF THE PROGRESS FUNCTION.
                 this.$emit('alert', 'test')
 
+            },
+            rebuildProgress() {
+                // this.gameProgress.buildings.quarry = this.savedGame.quarries
+
+                if (this.savedGame && this.savedGame.libraries) {
+                    // Regenerate libraries
+                    for (let i = 0; i < this.savedGame.libraries.length; i++) {
+
+                    }
+                }
             },
             checkPrice(type) {
                 // pay for the building with resources
@@ -234,7 +240,6 @@
                 let width = null;
                 let height = null;
                 let colour = null;
-                let store = null;
 
                 // TODO: Fix this so there's a better default value.
                 let type = this.value.title ? this.value.title : "test"
@@ -249,7 +254,6 @@
                         width = 10
                         height = 20
                         colour = 'grey'
-                        store = this.construction.Quarry
                         this.gameProgress.buildings.quarry++
                         this.gameProgress.score++
                         break;
@@ -257,7 +261,6 @@
                         width = 30
                         height = 30
                         colour = 'red'
-                        store = this.construction.Library
                         this.gameProgress.buildings.libraries++
                         this.gameProgress.score++
                         break;
@@ -265,7 +268,6 @@
                         width = 5
                         height = 5
                         colour = 'blue'
-                        store = this.construction.Defender
                         this.gameProgress.resources.defenders++
                         this.gameProgress.score += 10
                         break;
@@ -273,9 +275,8 @@
                         width = 1
                         height = 1
                         colour = 'black'
-                        store = this.construction.Quarry
                 }
-                
+
                 let x;
                 let y;
 
@@ -315,7 +316,7 @@
                 // This stores the individual game objects in the construction array
                 // TODO: Make sure these are stored correctly, since they'll be used when
                 // TODO: the game restarts to map the elements back on the canvas.
-                store.push({
+                this.gameProgress.construction.push({
                     type: type,
                     ax: x,
                     ay: y,
@@ -416,12 +417,12 @@
                 axios.post('/game-progress', this.gameProgress).then(response => {
                     alert('Game saved!');
                 });
-                this.logoff()
+                // this.logoff()
             },
             logoff() {
-                axios.post(this.logout).then(response => {
-                    window.location.href = '/login'
-                })
+                // axios.post(this.logout).then(response => {
+                //     window.location.href = '/login'
+                // })
             }
         }
     }
