@@ -25,21 +25,21 @@ class GameController extends Controller
         ]);
 
         foreach ($request->construction as $building) {
-            switch ($building->type) {
+            switch ($building['type']) {
                 case 'Quarry':
-                    $building->type = Building::QUARRY;
+                    $building['type'] = Building::QUARRY;
                     break;
                 case 'Library':
-                    $building->type = Building::LIBRARY;
+                    $building['type'] = Building::LIBRARY;
                     break;
                 case 'Defender':
-                    $building->type = Building::DEFENDER;
+                    $building['type'] = Building::DEFENDER;
             }
             Building::create([
                 'userId' => Auth::user()->id,
-                'type' => $building->type,
-                'x' => $building->ax,
-                'y' => $building->ay
+                'type' => $building['type'],
+                'x' => $building['ax'],
+                'y' => $building['ay']
             ]);
         }
     }

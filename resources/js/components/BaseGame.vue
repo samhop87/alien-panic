@@ -24,17 +24,21 @@
         props: {
             username: String,
             logout: String,
-            details: String
+            details: String,
+            buildings: String,
         },
         data() {
             return {
                 showModal: false,
-                savedGame: null
+                savedGame: null,
             }
         },
         beforeMount() {
             if (this.details) {
                 this.savedGame = JSON.parse(this.details)
+            }
+            if (this.buildings) {
+                this.savedGame.construction = JSON.parse(this.buildings)
             }
         },
         methods: {

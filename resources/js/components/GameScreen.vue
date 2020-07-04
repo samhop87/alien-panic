@@ -91,7 +91,7 @@
         props: {
             username: String,
             logout: String,
-            savedGame: Object
+            savedGame: Object,
         },
         data() {
             return {
@@ -109,18 +109,27 @@
                         alt: 'test'
                     },
                 ],
-                priceList: {
+                information: {
                     Quarry: {
                         rocks: 2,
-                        magic: 0
+                        magic: 0,
+                        color: 'grey',
+                        width: 10,
+                        height: 20,
                     },
                     Library: {
                         rocks: 5,
-                        magic: 1
+                        magic: 1,
+                        color: 'red',
+                        width: 30,
+                        height: 30,
                     },
                     Defender: {
                         rocks: 0,
-                        magic: 10
+                        magic: 10,
+                        color: 'blue',
+                        width: 5,
+                        height: 5,
                     }
                 },
                 coordinateList: {
@@ -160,6 +169,7 @@
         },
         mounted() {
             this.vueCanvas = document.getElementById("gameCanvas").getContext("2d");
+            this.rebuildProgress()
         },
         watch: {},
         methods: {
@@ -174,10 +184,43 @@
             rebuildProgress() {
                 // this.gameProgress.buildings.quarry = this.savedGame.quarries
 
-                if (this.savedGame && this.savedGame.libraries) {
-                    // Regenerate libraries
-                    for (let i = 0; i < this.savedGame.libraries.length; i++) {
-
+                if (this.savedGame && this.savedGame.construction) {
+                    for (let i = 0; i < this.savedGame.construction.length; i++) {
+                        switch (this.savedGame.construction[i].type) {
+                            case 1:
+                            this.vueCanvas.beginPath();
+                            this.vueCanvas.fillStyle = this.information.Quarry.color
+                            this.vueCanvas.fillRect(
+                                this.savedGame.construction[i].ax,
+                                this.savedGame.construction[i].ay,
+                                this.information.Quarry.width,
+                                this.information.Quarry.height
+                            );
+                            this.vueCanvas.stroke();
+                            break;
+                            case 2:
+                                this.vueCanvas.beginPath();
+                                this.vueCanvas.fillStyle = this.information.Library.color
+                                this.vueCanvas.fillRect(
+                                    this.savedGame.construction[i].ax,
+                                    this.savedGame.construction[i].ay,
+                                    this.information.Library.width,
+                                    this.information.Library.height
+                                );
+                                this.vueCanvas.stroke();
+                                break;
+                            case 3:
+                                this.vueCanvas.beginPath();
+                                this.vueCanvas.fillStyle = this.information.Defender.color
+                                this.vueCanvas.fillRect(
+                                    this.savedGame.construction[i].ax,
+                                    this.savedGame.construction[i].ay,
+                                    this.information.Defender.width,
+                                    this.information.Defender.height
+                                );
+                                this.vueCanvas.stroke();
+                                break;
+                        }
                     }
                 }
             },
@@ -189,7 +232,7 @@
 
                 switch (type) {
                     case "Quarry":
-                        totalCost = this.calculatePrice(this.priceList.Quarry)
+                        totalCost = this.calculatePrice(this.information.Quarry)
                         if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
                             alert("You don't have enough resources to build any quarries")
                             return false;
@@ -199,7 +242,7 @@
                         }
                         break;
                     case "Library":
-                        totalCost = this.calculatePrice(this.priceList.Library)
+                        totalCost = this.calculatePrice(this.information.Library)
                         if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
                             alert("No one is going to build a library for free, brah")
                             return false;
@@ -209,7 +252,7 @@
                         }
                         break;
                     case "Defender":
-                        totalCost = this.calculatePrice(this.priceList.Defender)
+                        totalCost = this.calculatePrice(this.information.Defender)
                         if (totalCost[0] > rocksTotal || totalCost[1] > magicTotal) {
                             alert("You don't have enough resources to train any defenders")
                             return false;
@@ -253,21 +296,21 @@
                     case "Quarry":
                         width = 10
                         height = 20
-                        colour = 'grey'
+                        colour = this.information.Quarry.color
                         this.gameProgress.buildings.quarry++
                         this.gameProgress.score++
                         break;
                     case "Library":
                         width = 30
                         height = 30
-                        colour = 'red'
-                        this.gameProgress.buildings.libraries++
+                        colour = this.information.Library.color
+                            this.gameProgress.buildings.libraries++
                         this.gameProgress.score++
                         break;
                     case "Defender":
                         width = 5
                         height = 5
-                        colour = 'blue'
+                        colour = this.information.Defender.color
                         this.gameProgress.resources.defenders++
                         this.gameProgress.score += 10
                         break;
@@ -417,12 +460,12 @@
                 axios.post('/game-progress', this.gameProgress).then(response => {
                     alert('Game saved!');
                 });
-                // this.logoff()
+                this.logoff()
             },
             logoff() {
-                // axios.post(this.logout).then(response => {
-                //     window.location.href = '/login'
-                // })
+                axios.post(this.logout).then(response => {
+                    window.location.href = '/login'
+                })
             }
         }
     }

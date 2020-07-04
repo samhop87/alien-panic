@@ -6,6 +6,7 @@
             username="{{ Auth::user()->name }}"
             logout="{{ route('logout') }}"
             details="{{ $savedGame }}"
+            buildings="{{$buildings}}"
         ></base-game>
     </div>
 @endsection

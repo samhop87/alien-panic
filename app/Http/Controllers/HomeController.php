@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Building;
 use App\GameProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,11 @@ class HomeController extends Controller
         $retrieved = GameProgress::where('userId', Auth::User()->id)->first();
         $savedGame = $retrieved ? $retrieved->toJson() : null;
 
-        return view('index', compact(['savedGame']));
+        if ($savedGame) {
+            $record = Building::where('userId', Auth::User()->id)->get();
+            $buildings = $record ? $record->toJson() : null;
+        }
+
+        return view('index', compact(['savedGame', 'buildings']));
     }
 }
