@@ -19,7 +19,7 @@ class Building extends Model
         'y',
     ];
 
-//    public function gameProgress() {
-//        return $this->hasOne('gameProgress', 'userId');
-//    }
+    public function gameProgress() {
+        return $this->belongsTo('gameProgress', 'userId');
+    }
 }

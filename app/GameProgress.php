@@ -19,8 +19,4 @@ class GameProgress extends Model
         'score',
         'attacksSurvived'
     ];
-
-    public function gameProgress() {
-        return $this->hasOne('gameProgress', 'userId');
-    }
 }

@@ -15,7 +15,7 @@ Route::post('/submit', 'EntryController@submit');
 
 Route::post('/user', 'EntryController@user');
 
-Route::post('/game-progress', 'GameController@saveGame');
+Route::post('/game-progress', 'GameController@store');
 
 Auth::routes();
 

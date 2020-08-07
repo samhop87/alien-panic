@@ -37,7 +37,7 @@
             if (this.details) {
                 this.savedGame = JSON.parse(this.details)
             }
-            if (this.buildings) {
+            if (this.details && this.buildings) {
                 this.savedGame.construction = JSON.parse(this.buildings)
             }
         },

@@ -92,6 +92,7 @@
             username: String,
             logout: String,
             savedGame: Object,
+            buildings: Object
         },
         data() {
             return {
@@ -143,11 +144,11 @@
                     resources: {
                         rocks: 0,
                         magic: 0,
-                        defenders: 0,
                     },
                     buildings: {
                         quarry: 0,
-                        libraries: 0
+                        libraries: 0,
+                        defenders: 0,
                     },
                     construction: [],
                     timer: null,
@@ -160,11 +161,12 @@
                 this.gameProgress.timer = this.savedGame.timeRemaining
                 this.gameProgress.buildings.libraries = this.savedGame.libraries
                 this.gameProgress.buildings.quarry = this.savedGame.quarries
+                this.gameProgress.buildings.defenders = this.savedGame.defenders
                 this.gameProgress.resources.rocks = this.savedGame.rocks
                 this.gameProgress.resources.magic = this.savedGame.magic
-                this.gameProgress.resources.defenders = this.savedGame.defenders
                 this.gameProgress.score = this.savedGame.score
                 this.gameProgress.attacksSurvived = this.savedGame.attacksSurvived
+                this.gameProgress.construction = this.savedGame.construction
             }
         },
         mounted() {
@@ -186,13 +188,15 @@
 
                 if (this.savedGame && this.savedGame.construction) {
                     for (let i = 0; i < this.savedGame.construction.length; i++) {
+                        console.log("it gets inside here correctly")
+                        console.log('each type', this.savedGame.construction[i].type)
                         switch (this.savedGame.construction[i].type) {
                             case 1:
                             this.vueCanvas.beginPath();
                             this.vueCanvas.fillStyle = this.information.Quarry.color
                             this.vueCanvas.fillRect(
-                                this.savedGame.construction[i].ax,
-                                this.savedGame.construction[i].ay,
+                                this.savedGame.construction[i].x,
+                                this.savedGame.construction[i].y,
                                 this.information.Quarry.width,
                                 this.information.Quarry.height
                             );
@@ -202,8 +206,8 @@
                                 this.vueCanvas.beginPath();
                                 this.vueCanvas.fillStyle = this.information.Library.color
                                 this.vueCanvas.fillRect(
-                                    this.savedGame.construction[i].ax,
-                                    this.savedGame.construction[i].ay,
+                                    this.savedGame.construction[i].x,
+                                    this.savedGame.construction[i].y,
                                     this.information.Library.width,
                                     this.information.Library.height
                                 );
@@ -213,8 +217,8 @@
                                 this.vueCanvas.beginPath();
                                 this.vueCanvas.fillStyle = this.information.Defender.color
                                 this.vueCanvas.fillRect(
-                                    this.savedGame.construction[i].ax,
-                                    this.savedGame.construction[i].ay,
+                                    this.savedGame.construction[i].x,
+                                    this.savedGame.construction[i].y,
                                     this.information.Defender.width,
                                     this.information.Defender.height
                                 );
@@ -311,7 +315,7 @@
                         width = 5
                         height = 5
                         colour = this.information.Defender.color
-                        this.gameProgress.resources.defenders++
+                        this.gameProgress.buildings.defenders++
                         this.gameProgress.score += 10
                         break;
                     default:

@@ -20,6 +20,8 @@ class EntryController extends Controller
     }
 
     /**
+     * Creates a new user
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException

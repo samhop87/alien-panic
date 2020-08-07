@@ -31,7 +31,13 @@ class HomeController extends Controller
 
         if ($savedGame) {
             $record = Building::where('userId', Auth::User()->id)->get();
-            $buildings = $record ? $record->toJson() : null;
+            $buildings = $record->map(function ($set) {
+               return [
+                  'type' => $set->type,
+                   'x' => $set->x,
+                   'y' => $set->y,
+               ];
+            });
         }
 
         return view('index', compact(['savedGame', 'buildings']));

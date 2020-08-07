@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
-    public function saveGame(Request $request)
+    public function store(Request $request)
     {
         GameProgress::updateOrCreate([
             'userId' => Auth::user()->id
